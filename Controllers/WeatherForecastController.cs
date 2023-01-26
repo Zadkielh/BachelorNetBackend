@@ -18,7 +18,7 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
+    [HttpGet]
     public IEnumerable<WeatherForecast> Get()
     {
         return Enumerable.Range(1, 10).Select(index => new WeatherForecast
@@ -29,4 +29,31 @@ public class WeatherForecastController : ControllerBase
         })
         .ToArray();
     }
+
+    [HttpGet("{id:int}")]
+    public IEnumerable<WeatherForecast> GetSingleWeather(int id)
+    {
+        return Enumerable.Range(1, 1).Select(index => new WeatherForecast
+        {
+            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+        })
+        .ToArray();
+    }
+
+    [HttpPost]
+	public IEnumerable<WeatherForecast> PostWeatherLocation([FromForm] string location)
+	{
+		//process the form data
+		
+        return Enumerable.Range(1, 1).Select(index => new WeatherForecast
+        {
+            location = location,
+            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+        })
+        .ToArray();
+	} 
 }

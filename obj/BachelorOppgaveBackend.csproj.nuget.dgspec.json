@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/indico/Documents/Bachelor/BachelorOppgaveBackend/BachelorOppgaveBackend.csproj": {}
+    "/Users/indico/Documents/Bachelor/BachelorNetBackend/BachelorOppgaveBackend.csproj": {}
   },
   "projects": {
-    "/Users/indico/Documents/Bachelor/BachelorOppgaveBackend/BachelorOppgaveBackend.csproj": {
+    "/Users/indico/Documents/Bachelor/BachelorNetBackend/BachelorOppgaveBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/indico/Documents/Bachelor/BachelorOppgaveBackend/BachelorOppgaveBackend.csproj",
+        "projectUniqueName": "/Users/indico/Documents/Bachelor/BachelorNetBackend/BachelorOppgaveBackend.csproj",
         "projectName": "BachelorOppgaveBackend",
-        "projectPath": "/Users/indico/Documents/Bachelor/BachelorOppgaveBackend/BachelorOppgaveBackend.csproj",
+        "projectPath": "/Users/indico/Documents/Bachelor/BachelorNetBackend/BachelorOppgaveBackend.csproj",
         "packagesPath": "/Users/indico/.nuget/packages/",
-        "outputPath": "/Users/indico/Documents/Bachelor/BachelorOppgaveBackend/obj/",
+        "outputPath": "/Users/indico/Documents/Bachelor/BachelorNetBackend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/indico/.nuget/NuGet/NuGet.Config"

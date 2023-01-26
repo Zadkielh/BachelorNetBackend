@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NgeatTJLi94owliEBDBnyN/3WIOyaaoJ2vJT+2Lc8yXjwNfNfvNDR2PrF5jgfKOj0dpxmTpGGb7Xk6PZQL85Ig==",
+  "dgSpecHash": "9h4hLN9SCjg24NVq1QYb+ZFwY65vV2FV+uhWFCyiRJ2X1XSyh+wAIJAVpwJO1KrdeImcHGGJFpDpbeOkgtXcgw==",
   "success": true,
-  "projectFilePath": "/Users/indico/Documents/Bachelor/BachelorOppgaveBackend/BachelorOppgaveBackend.csproj",
+  "projectFilePath": "/Users/indico/Documents/Bachelor/BachelorNetBackend/BachelorOppgaveBackend.csproj",
   "expectedPackageFiles": [
     "/Users/indico/.nuget/packages/microsoft.aspnetcore.openapi/7.0.2/microsoft.aspnetcore.openapi.7.0.2.nupkg.sha512",
     "/Users/indico/.nuget/packages/microsoft.entityframeworkcore/7.0.2/microsoft.entityframeworkcore.7.0.2.nupkg.sha512",

@@ -33,6 +33,7 @@ public class WeatherForecastController : ControllerBase
     [HttpGet("{id:int}")]
     public IEnumerable<WeatherForecast> GetSingleWeather(int id)
     {
+        
         return Enumerable.Range(1, 1).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -56,4 +57,11 @@ public class WeatherForecastController : ControllerBase
         })
         .ToArray();
 	} 
+    
+     [HttpGet("test")]
+    public RedirectResult Index()
+    {
+     return new RedirectResult(url: "http://localhost:3000/posts/mine", permanent: true,
+                             preserveMethod: true);
+    }
 }

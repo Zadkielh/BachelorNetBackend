@@ -45,7 +45,6 @@
 /Users/indico/Documents/Bachelor/BachelorNetBackend/obj/Debug/net7.0/refint/BachelorOppgaveBackend.dll
 /Users/indico/Documents/Bachelor/BachelorNetBackend/obj/Debug/net7.0/BachelorOppgaveBackend.pdb
 /Users/indico/Documents/Bachelor/BachelorNetBackend/bin/Debug/net7.0/appsettings.Development.json
-/Users/indico/Documents/Bachelor/BachelorNetBackend/bin/Debug/net7.0/appsettings.json
 /Users/indico/Documents/Bachelor/BachelorNetBackend/bin/Debug/net7.0/BachelorOppgaveBackend
 /Users/indico/Documents/Bachelor/BachelorNetBackend/bin/Debug/net7.0/BachelorOppgaveBackend.deps.json
 /Users/indico/Documents/Bachelor/BachelorNetBackend/bin/Debug/net7.0/BachelorOppgaveBackend.runtimeconfig.json

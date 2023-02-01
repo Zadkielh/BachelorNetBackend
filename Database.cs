@@ -1,24 +1,28 @@
 ﻿using System;
 using Npgsql;
 
+
+// https://learn.microsoft.com/en-us/azure/cosmos-db/postgresql/quickstart-app-stacks-csharp
 namespace BachelorOppgaveBackend
 {
     public class AzurePostgres
     {
 
         private NpgsqlConnectionStringBuilder connStr;
+        private NpgsqlConnection conn;
 
-        public AzurePostgres() { ConnectToDb(); }
-        public void ConnectToDb()
+        public AzurePostgres() { Setup(); }
+        public void Setup()
         {
             // Replace <cluster> with your cluster name and <password> with your password:
             connStr = new NpgsqlConnectionStringBuilder("Server = c.sg1be7af508fe242089624321e953c0f3c.postgres.database.azure.com; Database = citus; Port = 5432; User Id = citus; Password = Vjgxollgrnlkm12; Ssl Mode = Require; Pooling = true; Minimum Pool Size=0; Maximum Pool Size =50 ");
             connStr.TrustServerCertificate = true;
+            conn = new NpgsqlConnection(connStr.ToString());
         }
 
-        public NpgsqlConnection Connect()
+        public void Reconnect()
         {
-            return new NpgsqlConnection(connStr.ToString());
+            conn = new NpgsqlConnection(connStr.ToString());
         }
 
         public void CreateTable()

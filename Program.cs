@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 var db = new AzurePostgres();
-db.Create();
+db.Setup();
 
 
 // Configure the HTTP request pipeline.

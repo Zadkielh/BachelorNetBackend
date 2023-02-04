@@ -59,9 +59,13 @@ public class WeatherForecastController : ControllerBase
 	} 
     
      [HttpGet("test")]
-    public RedirectResult Index()
+    public RedirectResult Index(AzureAd test)
     {
-     return new RedirectResult(url: "http://localhost:3000/posts/mine", permanent: true,
+
+        var name = test.name; 
+        return new RedirectResult(url: "http://localhost:3000/posts/mine", permanent: true,
                              preserveMethod: true);
     }
 }
+
+

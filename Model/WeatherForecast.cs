@@ -12,3 +12,8 @@ public class WeatherForecast
     
     public string? location {get; set;}
 }
+
+public class AzureAd
+{
+  public string? name { get; set;} 
+}

@@ -7,6 +7,12 @@ namespace BachelorOppgaveBackend.Controllers
     [ApiController]
     public class DatabaseController : ControllerBase
     {
-           
+        private readonly ILogger<DatabaseController> _logger;
+
+        public DatabaseController(ILogger<DatabaseController> logger)
+        {
+            _logger = logger;
+        }
+
     }
 }

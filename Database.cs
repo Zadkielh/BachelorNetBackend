@@ -15,10 +15,7 @@ namespace BachelorOppgaveBackend
         private NpgsqlConnectionStringBuilder connStr;
         private NpgsqlConnection conn;
 
-        public AzurePostgres() { Setup(); }
-        public void Setup()
-        {
-
+        public AzurePostgres() {
             var connectionString = namespc.ConfigurationManager.ConnectionStrings["CosmosDBUserFeedBack"].ConnectionString;
 
             connStr = new NpgsqlConnectionStringBuilder(connectionString);

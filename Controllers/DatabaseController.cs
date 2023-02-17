@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BachelorOppgaveBackend.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BachelorOppgaveBackend.Controllers
@@ -12,6 +13,18 @@ namespace BachelorOppgaveBackend.Controllers
         public DatabaseController(ILogger<DatabaseController> logger)
         {
             _logger = logger;
+        }
+
+        public ActionResult AddUser(User newUser)
+        {
+            var RoleId = newUser.UserRoleId;
+            var UserName = newUser.UserName;
+
+            // Database
+
+
+
+            return RedirectToAction("Index");
         }
 
     }

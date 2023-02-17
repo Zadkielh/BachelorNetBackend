@@ -15,14 +15,17 @@ namespace BachelorOppgaveBackend.Controllers
             _logger = logger;
         }
 
+        [HttpPost]
         public ActionResult AddUser(User newUser)
         {
-            var RoleId = newUser.UserRoleId;
-            var UserName = newUser.UserName;
+            var UserID = Guid.NewGuid();
+            var UserName = newUser.user_name;
+            var UserRole = newUser.user_role_id;
 
             // Database
+            var db = new AzurePostgres();
 
-
+            db.AddUser(UserID, UserName, UserRole);
 
             return RedirectToAction("Index");
         }

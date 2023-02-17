@@ -2,11 +2,11 @@
 {
     public class UserRole
     {
-        public int Id { get; set; }
-        public string? UserRoleType { get; set; }
+        public int user_role_id { get; set; }
+        public string? user_role_type { get; set; }
 
-        public string? Description { get; set; }
+        public string? description { get; set; }
 
-        public DateOnly CreatedAt { get; set; }
+        public DateOnly created_at { get; set; }
     }
 }

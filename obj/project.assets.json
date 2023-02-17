@@ -1412,24 +1412,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/indico/.nuget/packages/": {}
+    "C:\\Users\\habbo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/indico/Documents/Bachelor/BachelorNetBackend/BachelorOppgaveBackend.csproj",
+      "projectUniqueName": "C:\\Users\\habbo\\Bachelor\\BachelorOppgaveBackend.csproj",
       "projectName": "BachelorOppgaveBackend",
-      "projectPath": "/Users/indico/Documents/Bachelor/BachelorNetBackend/BachelorOppgaveBackend.csproj",
-      "packagesPath": "/Users/indico/.nuget/packages/",
-      "outputPath": "/Users/indico/Documents/Bachelor/BachelorNetBackend/obj/",
+      "projectPath": "C:\\Users\\habbo\\Bachelor\\BachelorOppgaveBackend.csproj",
+      "packagesPath": "C:\\Users\\habbo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\habbo\\Bachelor\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/indico/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\habbo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1488,7 +1490,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.102/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

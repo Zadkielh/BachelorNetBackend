@@ -2,14 +2,14 @@
 {
     public class Post
     {
-        public int PostId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int UserId { get; set; }
+        public int post_id { get; set; }
+        public string? title { get; set; }
+        public string? description { get; set; }
+        public int user_id { get; set; }
 
-        public int CategoryId { get; set; }
+        public int category_id { get; set; }
 
-        public DateOnly CreatedAt { get; set; }
+        public DateOnly created_at { get; set; }
 
 
     }

@@ -2,12 +2,12 @@
 {
     public class Vote
     {
-        public int Id { get; set; }
+        public int vote_id { get; set; }
 
-        public int UserId { get; set; }
+        public int user_id { get; set; }
 
-        public int PostId { get; set; }
+        public int post_id { get; set; }
 
-        public DateOnly CreatedAt { get; set; }
+        public DateOnly created_at { get; set; }
     }
 }

@@ -105,3 +105,13 @@ C:\Users\habbo\Bachelor\obj\Debug\net7.0\refint\BachelorOppgaveBackend.dll
 C:\Users\habbo\Bachelor\obj\Debug\net7.0\BachelorOppgaveBackend.pdb
 C:\Users\habbo\Bachelor\obj\Debug\net7.0\BachelorOppgaveBackend.genruntimeconfig.cache
 C:\Users\habbo\Bachelor\obj\Debug\net7.0\ref\BachelorOppgaveBackend.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\System.Drawing.Common.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\System.Security.Permissions.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\System.Windows.Extensions.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\habbo\Bachelor\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll

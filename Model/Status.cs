@@ -2,13 +2,13 @@
 {
     public class Status
     {
-        public int Id { get; set; }
-        public int PostId { get; set; }
-        public int UserId { get; set; }
-        public string? Status { get; set; }
+        public int status_id { get; set; }
+        public int post_id { get; set; }
+        public int user_id { get; set; }
+        public string? status { get; set; }
 
-        public string? Description { get; set; }
+        public string? description { get; set; }
 
-        public DateOnly CreatedAt { get; set; }
+        public DateOnly created_at { get; set; }
     }
 }

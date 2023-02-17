@@ -2,12 +2,12 @@
 {
     public class User
     {
-        public int UserId { get; set; }
+        public Guid user_id { get; set; }
 
-        public string? UserName { get; set; }
-        public DateOnly CreatedAt { get; set; }
+        public string? user_name { get; set; }
+        public DateOnly created_at { get; set; }
 
-        public int UserRoleId { get; set; }
+        public int user_role_id { get; set; }
 
     }
 }

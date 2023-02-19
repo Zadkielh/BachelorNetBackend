@@ -20,9 +20,10 @@ public class WeatherForecastController : ControllerBase
 
     [HttpGet]
     public IEnumerable<WeatherForecast> Get()
-    {
+    {   
         return Enumerable.Range(1, 10).Select(index => new WeatherForecast
-        {
+        {   
+            WeatherId = index,
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
@@ -58,10 +59,14 @@ public class WeatherForecastController : ControllerBase
         .ToArray();
 	} 
     
-     [HttpGet("test")]
-    public RedirectResult Index()
+     [HttpPost("test")]
+    public RedirectResult Index(AzureAd test)
     {
-     return new RedirectResult(url: "http://localhost:3000/posts/mine", permanent: true,
+
+        var name = test.name; 
+        return new RedirectResult(url: "http://localhost:3000/posts/mine", permanent: true,
                              preserveMethod: true);
     }
 }
+
+

@@ -2,6 +2,9 @@ namespace BachelorOppgaveBackend;
 
 public class WeatherForecast
 {
+
+    public int WeatherId {get; set;}
+
     public DateOnly Date { get; set; }
 
     public int TemperatureC { get; set; }
@@ -11,4 +14,9 @@ public class WeatherForecast
     public string? Summary { get; set; }
     
     public string? location {get; set;}
+}
+
+public class AzureAd
+{
+  public string? name { get; set;} 
 }

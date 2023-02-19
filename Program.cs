@@ -1,3 +1,6 @@
+using BachelorOppgaveBackend;
+using Microsoft.EntityFrameworkCore.Storage;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add cors
@@ -13,6 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+var db = new AzurePostgres();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

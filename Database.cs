@@ -59,12 +59,12 @@ namespace BachelorOppgaveBackend
             Console.Out.WriteLine("Opening connection");
             conn.Open();
 
-            var userCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Users (id uuid ,user_name text,created_at timestamp not null default CURRENT_TIMESTAMP ,user_role_id integer);", conn);
+            var userCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Users (id uuid ,user_name text,created_at timestamp not null default CURRENT_TIMESTAMP ,user_role_id uuid);", conn);
             var userRoleCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS User_Role (id uuid ,user_role_type text,description text ,created_at timestamp not null default CURRENT_TIMESTAMP);", conn);
-            var voteCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Vote (id uuid ,user_id integer ,post_id integer, created_at timestamp not null default CURRENT_TIMESTAMP);", conn);
-            var statusCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Status (id uuid ,post_id integer, user_id integer, status text, description text ,created_at timestamp not null default CURRENT_TIMESTAMP);", conn);
-            var postCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Post (id uuid ,title text,description text,user_id integer, category_id integer, created_at timestamp not null default CURRENT_TIMESTAMP);", conn);
-            var commentCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Comment (id uuid ,post_id integer,parent_id integer,user_id integer, content text, created_at timestamp not null default CURRENT_TIMESTAMP );", conn);
+            var voteCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Vote (id uuid ,user_id uuid ,post_id uuid, created_at timestamp not null default CURRENT_TIMESTAMP);", conn);
+            var statusCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Status (id uuid ,post_id uuid, user_id uuid, status text, description text ,created_at timestamp not null default CURRENT_TIMESTAMP);", conn);
+            var postCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Post (id uuid ,title text,description text,user_id uuid, category_id uuid, created_at timestamp not null default CURRENT_TIMESTAMP);", conn);
+            var commentCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Comment (id uuid, post_id uuid, comment_id uuid, user_id uuid, content text, created_at timestamp not null default CURRENT_TIMESTAMP );", conn);
             var categoryCommand = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS Category (id uuid ,name text, description text, created_at timestamp not null default CURRENT_TIMESTAMP);", conn);
 
             userCommand.ExecuteNonQuery();
@@ -78,63 +78,6 @@ namespace BachelorOppgaveBackend
             Console.Out.WriteLine("Finished validating.");
 
             conn.Close();
-        }
-
-        public int AddUser(Guid uuid, string user_name, int user_role_id)
-        {
-            Console.Out.WriteLine("Opening connection");
-            conn.Open();
-
-            var userCommand = new NpgsqlCommand("INSERT INTO  User  (id,user_name,user_role_id) VALUES (@a, @b, @c)", conn);
-            userCommand.Parameters.AddWithValue("a", uuid);
-            userCommand.Parameters.AddWithValue("b", user_name);
-            userCommand.Parameters.AddWithValue("c", user_role_id);
-            var res = userCommand.ExecuteNonQuery();
-
-            conn.Close();
-            return res;
-        }
-
-        public async IAsyncEnumerable<User> GetUsers() 
-        {
-            Console.Out.WriteLine("GetUsers");
-            conn.Open();
-            await using var q = new NpgsqlCommand("SELECT * FROM Users", conn);
-            await using var reader = await q.ExecuteReaderAsync();
-            
-
-
-            while (reader.Read()) {
-                var d = new User();
-                d.id = reader.GetGuid(0);
-                d.user_name = reader.GetString(1);
-                d.created_at = reader.GetDateTime(2);
-                d.user_role_id = reader.GetInt32(3);
-                
-                yield return d;
-            }
-            conn.Close();
-            reader.Close();
-        }
-
-        public async IAsyncEnumerable<User> GetUser(Guid id) {
-            Console.Out.WriteLine("GetUser");
-            conn.Open();
-            await using var q = new NpgsqlCommand("SELECT * FROM Users WHERE user_id = @a", conn);
-            q.Parameters.AddWithValue("a", id);
-            await using var reader = await q.ExecuteReaderAsync();
-
-            while(reader.Read()) {
-                 var d = new User();
-                d.id = reader.GetGuid(0);
-                d.user_name = reader.GetString(1);
-                d.created_at = reader.GetDateTime(2);
-                d.user_role_id = reader.GetInt32(3);
-                
-                yield return d;
-            }
-            conn.Close();
-            reader.Close();
         }
 
 

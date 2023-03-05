@@ -24,11 +24,10 @@ namespace BachelorOppgaveBackend.Controllers
         {
             var UserID = Guid.NewGuid();
             var UserName = newUser.user_name;
-            var UserRole = newUser.user_role_id;
+            var UserRole = Guid.NewGuid();
 
+            var db = new DbUser(conn);
             // Database
-            var db = new AzurePostgres();
-
             db.AddUser(UserID, UserName, UserRole);
 
             return Ok("User Added");
@@ -43,7 +42,7 @@ namespace BachelorOppgaveBackend.Controllers
 
         [HttpGet("{id:Guid}")]
         public IActionResult GetUser(Guid id) {
-            var db = new AzurePostgres();
+            var db = new DbUser(conn);
             var res = db.GetUser(id);
             return Ok(res);
         }

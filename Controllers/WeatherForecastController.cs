@@ -24,7 +24,7 @@ public class WeatherForecastController : ControllerBase
         return Enumerable.Range(1, 10).Select(index => new WeatherForecast
         {   
             WeatherId = index,
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            Date = DateTime.Now.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
@@ -37,7 +37,7 @@ public class WeatherForecastController : ControllerBase
         
         return Enumerable.Range(1, 1).Select(index => new WeatherForecast
         {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            Date = DateTime.Now.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
@@ -52,21 +52,12 @@ public class WeatherForecastController : ControllerBase
         return Enumerable.Range(1, 1).Select(index => new WeatherForecast
         {
             location = location,
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            Date = DateTime.Now.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
 	} 
-    
-     [HttpPost("test")]
-    public RedirectResult Index(AzureAd test)
-    {
-
-        var name = test.name; 
-        return new RedirectResult(url: "http://localhost:3000/posts/mine", permanent: true,
-                             preserveMethod: true);
-    }
 }
 
 

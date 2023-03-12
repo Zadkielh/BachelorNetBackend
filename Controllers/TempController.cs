@@ -14,12 +14,17 @@ public class TempController : ControllerBase
     {
         _context = context;
     }
-
-
-    [HttpGet]
-    public ActionResult InitDb()
+    
+    [HttpPost]
+    public IActionResult InitDb([FromBody] string password)
     {
+        if (password != "password")
+        {
+            return NoContent();
+        }
+        
         new ApplicationDbInitializer().Initialize(_context);
+        
         return Ok("Init db");
     }
 

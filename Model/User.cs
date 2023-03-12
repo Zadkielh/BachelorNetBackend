@@ -6,20 +6,20 @@ namespace BachelorOppgaveBackend.Model
     {
         public User() {}
 
-        public User(Guid userId, string userName, string email, Guid userRoleId)
+        public User(UserRole userRole, Guid azureId, string userName, string email)
         {
-            UserId = userId;
+            UserRole = userRole;
+            AzureId = azureId;
             UserName = userName;
             Email = email;
             Created = DateTime.UtcNow;
-            UserRoleId = userRoleId;
 
         }
             
         public Guid Id { get; set; }
         
         [Required]
-        public Guid UserId { get; set; }
+        public Guid AzureId { get; set; }
         
         [Required]
         public string? UserName { get; set; }
@@ -29,6 +29,7 @@ namespace BachelorOppgaveBackend.Model
         public string Email { get; set; }
         
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime Created { get; set; }
 
         [Required]

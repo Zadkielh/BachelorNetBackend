@@ -1,13 +1,29 @@
-﻿namespace BachelorOppgaveBackend.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BachelorOppgaveBackend.Model
 {
     public class Vote
     {
-        public Guid id { get; set; }
+        public Vote() {}
 
-        public Guid user_id { get; set; }
-
-        public Guid post_id { get; set; }
-
-        public DateTime created_at { get; set; }
+        public Vote(User user, Post post)
+        {
+            User = user;
+            Post = post;
+            Created = DateTime.UtcNow;
+        }
+        public Guid Id { get; set; }
+        
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime Created { get; set; }
+        
+        [Required]
+        public Guid UserId { get; set; }
+        public User User { get; set; }
+        
+        [Required]
+        public Guid PostId { get; set; }
+        public Post Post { get; set; }
     }
 }

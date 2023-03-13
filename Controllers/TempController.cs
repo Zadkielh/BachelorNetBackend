@@ -20,7 +20,7 @@ public class TempController : ControllerBase
     {
         if (password != "password")
         {
-            return NoContent();
+            return NotFound("Invalid Password");
         }
         
         new ApplicationDbInitializer().Initialize(_context);

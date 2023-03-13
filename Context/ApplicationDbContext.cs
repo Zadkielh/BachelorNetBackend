@@ -17,8 +17,7 @@ namespace BachelorOppgaveBackend.PostgreSQL
        public DbSet<Status> Statuses { get; set; }
        public DbSet<Comment> Comments { get; set; }
        public DbSet<Vote> Votes { get; set; }
-
-
+       public DbSet<Favorit> Favorites { get; set; }
    }
    
    public class ApplicationDbInitializer
@@ -73,10 +72,7 @@ namespace BachelorOppgaveBackend.PostgreSQL
            
            // Add Status test data
            var s1 = new Status(null, "Pending", "Venter på svar");
-
            var s2 = new Status(null, "Pending", "Venter på svar");
-
-
 
            var status = new[]
            {

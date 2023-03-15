@@ -76,8 +76,7 @@ namespace BachelorOppgaveBackend.PostgreSQL
 
            var status = new[]
            {
-               s1, 
-               s2
+               s1, s2
            };
            
            db.Statuses.AddRange(status);
@@ -88,13 +87,29 @@ namespace BachelorOppgaveBackend.PostgreSQL
            var getRis = db.Categories.Where(r => r.Type == "Ris").FirstOrDefault();
            var getRos = db.Categories.Where(r => r.Type == "Ros").FirstOrDefault();
 
+           var p1 = new Post(getUsers[0], getRis, s1,"Elendig UX design", "Kunne gjort det mye bedre selv");
+           var p2 = new Post(getUsers[1], getRos, s2, "Drit bra animasjoner", "10 av 10 animasjoner på forsiden. Dere har flinke utviklere"); 
+           
            var post = new[]
            {
-               new Post(getUsers[0], getRis, s1,"Elendig UX design", "Kunne gjort det mye bedre selv"),
-               new Post(getUsers[1], getRos, s2, "Drit bra animasjoner", "10 av 10 animasjoner på forsiden. Dere har flinke utviklere")
+              p1, p2
            };
             
            db.Posts.AddRange(post);
+           db.SaveChanges();
+
+           var c1 = new Comment(p1, getUsers[2], null, "Helt enig med deg");
+           var c1_1 = new Comment(p1, getUsers[1], null, "Dere er kjempe bra firma. Ikke hør på de andre!");
+
+           var c2 = new Comment(p1, getUsers[0], null, "Nei! Uenig. De har dårlige animasjoner");
+           var c2_2 = new Comment(p1, getUsers[2], null, "Kjempe dårlig ja!");
+
+           var comment = new[]
+           {
+            c1, c1_1, c2, c2_2
+           };
+
+           db.Comments.AddRange(comment);
            db.SaveChanges();
        }
    }

@@ -33,7 +33,7 @@ namespace BachelorOppgaveBackend.Model
         public User User { get; set; }
         
         public Guid? CommentId { get; set; }
-        public Comment SubComment { get; set; }
+        public Comment? SubComment { get; set; }
         
     }
 }

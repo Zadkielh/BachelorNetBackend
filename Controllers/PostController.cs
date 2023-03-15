@@ -20,8 +20,16 @@ public class PostController : ControllerBase
     public IActionResult GetPosts()
     {
         var posts = _context.Posts.Include(u => u.User)
-            .Include(p => p.Category)
-            .Include(a => a.Status)
+            .Select(p => new {
+                p.Id,
+                p.Title,
+                p.Description,
+                p.Created,
+                user = new {p.UserId, p.User.UserName, p.User.Email},
+                category = new {p.CategoryId, p.Category.Type},
+                status = new {p.StatusId, p.Status.Type}
+                
+                })
             .ToList();
 
         if (posts == null)
@@ -31,4 +39,30 @@ public class PostController : ControllerBase
 
         return Ok(posts);
     }
+
+    [HttpGet("{title}")]
+     public IActionResult GetPosts(string title)
+    {
+        var posts = _context.Posts.Include(u => u.User)
+            .Select(p => new {
+                p.Id,
+                p.Title,
+                p.Description,
+                p.Created,
+                user = new {p.UserId, p.User.UserName, p.User.Email},
+                category = new {p.CategoryId, p.Category.Type},
+                status = new {p.StatusId, p.Status.Type}
+                
+                })
+            .Where(t => t.Title.Contains(title))
+            .ToList();
+
+        if (posts == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(posts);
+    }
+
 }

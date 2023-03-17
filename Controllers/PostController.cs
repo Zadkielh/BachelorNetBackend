@@ -2,6 +2,7 @@ using BachelorOppgaveBackend.Model;
 using Microsoft.AspNetCore.Mvc;
 using BachelorOppgaveBackend.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace BachelorOppgaveBackend.Controllers;
 
@@ -19,11 +20,12 @@ public class PostController : ControllerBase
     [HttpGet]
     public IActionResult GetPosts()
     {
-        var posts = _context.Posts.Include(u => u.User)
+        var posts = _context.Posts
             .Select(p => new {
                 p.Id,
                 p.Title,
                 p.Description,
+                voteCount = 100,
                 p.Created,
                 user = new {p.UserId, p.User.UserName, p.User.Email},
                 category = new {p.CategoryId, p.Category.Type},
@@ -42,12 +44,13 @@ public class PostController : ControllerBase
 
     [HttpGet("{title}")]
      public IActionResult GetPosts(string title)
-    {
-        var posts = _context.Posts.Include(u => u.User)
+     {
+        var posts = _context.Posts
             .Select(p => new {
                 p.Id,
                 p.Title,
                 p.Description,
+                voteCount = 100,
                 p.Created,
                 user = new {p.UserId, p.User.UserName, p.User.Email},
                 category = new {p.CategoryId, p.Category.Type},
@@ -61,7 +64,13 @@ public class PostController : ControllerBase
         {
             return NotFound();
         }
-
+        
+        // Loop true votes and count
+        foreach (var pos in posts)
+        {
+            continue;
+        }
+        
         return Ok(posts);
     }
 

@@ -46,5 +46,4 @@ app.MapControllers();
 app.Run();
 
 //"Server=c.sg6222938976534e0d862d260256f19fda.postgres.database.azure.com; Database=citus; Port=5432; User Id=citus; Password=Mosabjonn1814;"
-
-
+//"Server=localhost; Database=Feedback; Port=5432; User Id=postgres; Password=1234;"

@@ -21,17 +21,16 @@ public class PostController : ControllerBase
     public IActionResult GetPosts()
     {
         var posts = _context.Posts
-            .Select(p => new {
+            .Select(p => new
+            {
                 p.Id,
                 p.Title,
                 p.Description,
-                voteCount = 100,
                 p.Created,
-                user = new {p.UserId, p.User.UserName, p.User.Email},
-                category = new {p.CategoryId, p.Category.Type},
-                status = new {p.StatusId, p.Status.Type}
-                
-                })
+                user = new { p.UserId, p.User.UserName, p.User.Email },
+                category = new { p.CategoryId, p.Category.Type },
+                status = new { p.StatusId, p.Status.Type }
+            })
             .ToList();
 
         if (posts == null)
@@ -39,24 +38,32 @@ public class PostController : ControllerBase
             return NotFound();
         }
 
-        return Ok(posts);
+        List<object> final = new List<object>();
+        // Loop true votes and count
+        foreach (var pos in posts)
+        {
+            var voteCount = _context.Votes.Where(p => pos.Id == p.PostId).Count();
+            final.Add(new {pos.Id, pos.Title, pos.Description, votes = voteCount, pos.Created, pos.user, pos.category, pos.status,});
+        }
+
+        return Ok(final);
     }
 
-    [HttpGet("{title}")]
-     public IActionResult GetPosts(string title)
-     {
+    [HttpGet("title/{title}")]
+    public IActionResult GetPostsByTitle(string title)
+    {
         var posts = _context.Posts
-            .Select(p => new {
+            .Select(p => new
+            {
                 p.Id,
                 p.Title,
                 p.Description,
                 voteCount = 100,
                 p.Created,
-                user = new {p.UserId, p.User.UserName, p.User.Email},
-                category = new {p.CategoryId, p.Category.Type},
-                status = new {p.StatusId, p.Status.Type}
-                
-                })
+                user = new { p.UserId, p.User.UserName, p.User.Email },
+                category = new { p.CategoryId, p.Category.Type },
+                status = new { p.StatusId, p.Status.Type }
+            })
             .Where(t => t.Title.Contains(title))
             .ToList();
 
@@ -64,14 +71,48 @@ public class PostController : ControllerBase
         {
             return NotFound();
         }
-        
+
         // Loop true votes and count
         foreach (var pos in posts)
         {
             continue;
         }
-        
+
         return Ok(posts);
     }
 
+
+    [HttpGet("id/{id}")]
+    public IActionResult GetPostById(Guid id)
+    {
+        var posts = _context.Posts
+            .Select(p => new
+            {
+                p.Id,
+                p.Title,
+                p.Description,
+                voteCount = 100,
+                p.Created,
+                user = new { p.UserId, p.User.UserName, p.User.Email },
+                category = new { p.CategoryId, p.Category.Type },
+                status = new { p.StatusId, p.Status.Type }
+            })
+            .Where(t => t.Id == id)
+            .FirstOrDefault();
+
+        if (posts == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(posts);
+    }
+
+
+    [HttpPost]
+    public IActionResult AddPost([FromForm] Post post)
+    {
+        Console.WriteLine(post);
+        return Ok();
+    }
 }

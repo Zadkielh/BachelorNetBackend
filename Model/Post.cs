@@ -40,4 +40,12 @@ namespace BachelorOppgaveBackend.Model
         public Guid StatusId { get; set; }
         public Status Status { get; set; }
     }
+
+
+    public class FormPost
+    {
+        public Guid? categoryId { get; set; }
+        public string? title { get; set; } = "";
+        public string? description { get; set; } = "";
+    }
 }

@@ -118,8 +118,7 @@ namespace BachelorOppgaveBackend.PostgreSQL
                new Vote(getUsers[1], p1),
                new Vote(getUsers[2], p1),
                new Vote(getUsers[0], p2),
-               new Vote(getUsers[1], p2),
-               new Vote(getUsers[2], p2)
+               new Vote(getUsers[1], p2)
            };
            
            db.Votes.AddRange(vote);

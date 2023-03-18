@@ -79,7 +79,6 @@ public class PostController : ControllerBase
         {
             return NotFound();
         }
-
         return Ok(posts);
     }
 

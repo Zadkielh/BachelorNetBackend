@@ -1,6 +1,7 @@
 using BachelorOppgaveBackend.Model;
 using Microsoft.AspNetCore.Mvc;
 using BachelorOppgaveBackend.PostgreSQL;
+using Microsoft.EntityFrameworkCore;
 
 namespace BachelorOppgaveBackend.Controllers;
 
@@ -18,7 +19,7 @@ public class UserController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var users = _context.Users.ToList();
+        var users = _context.Users.Include(r => r.UserRole).ToList();
         if (users == null)
         {
             return NotFound();

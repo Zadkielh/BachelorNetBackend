@@ -16,12 +16,8 @@ public class TempController : ControllerBase
     }
     
     [HttpPost]
-    public IActionResult InitDb([FromBody] string password)
+    public IActionResult InitDb()
     {
-        if (password != "password")
-        {
-            return NotFound("Invalid Password");
-        }
         
         new ApplicationDbInitializer().Initialize(_context);
         

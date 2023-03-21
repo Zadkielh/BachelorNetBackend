@@ -5,7 +5,7 @@ namespace BachelorOppgaveBackend.PostgreSQL
 {
    public class ApplicationDbContext : DbContext
    {
-       // This constructor must exist so you can register it as a service (next slide)
+       // This constructor must exist so you can register it as a service
        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
        { }
 
@@ -18,6 +18,7 @@ namespace BachelorOppgaveBackend.PostgreSQL
        public DbSet<Comment> Comments { get; set; }
        public DbSet<Vote> Votes { get; set; }
        public DbSet<Favorit> Favorites { get; set; }
+       public DbSet<Notification> Notifications { get; set; }
    }
    
    public class ApplicationDbInitializer

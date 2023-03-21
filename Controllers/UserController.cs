@@ -17,7 +17,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public IActionResult GetUser()
     {
         var users = _context.Users.Include(r => r.UserRole).ToList();
         if (users == null)
@@ -29,9 +29,29 @@ public class UserController : ControllerBase
     
     
     [HttpPost]
-    public IActionResult Post()
+    public IActionResult PostUser([FromForm] Guid azureId, [FromForm] string userName, [FromForm] string userEmail, [FromHeader] string token)
     {
-        return Ok();
+        var secretKey = "1234";
+        if (token != secretKey)
+        {
+            return NotFound("Invalid token");
+        }
+
+        var userExists = _context.Users.Include(u => u.UserRole).Where(u => u.AzureId == azureId).FirstOrDefault();
+
+        if(userExists != null)
+        {
+            return Ok(userExists);
+        }
+        var role = _context.UsersRoles.Where(r => r.Type == "User").FirstOrDefault();
+
+        if (role == null) return NotFound("Missing Role");
+
+        var user = new User(role, azureId, userName, userEmail);
+
+        //_context.Users.Add(user);
+        
+        return Ok(user);
     }
 
     

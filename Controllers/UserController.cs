@@ -49,8 +49,8 @@ public class UserController : ControllerBase
 
         var user = new User(role, azureId, userName, userEmail);
 
-        //_context.Users.Add(user);
-        
+        _context.Users.Add(user);
+        _context.SaveChanges();
         return Ok(user);
     }
 

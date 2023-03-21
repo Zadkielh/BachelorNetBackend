@@ -1,29 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace BachelorOppgaveBackend.Model
 {
-    public class Vote
+    public class Favorit
     {
-        public Vote() {}
+        public Favorit() {}
 
-        public Vote(User user, Post post)
+        public Favorit(User user, Post post)
         {
             User = user;
             Post = post;
             Created = DateTime.UtcNow;
         }
+        
         public Guid Id { get; set; }
         
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime Created { get; set; }
         
-        [Required]
         public Guid UserId { get; set; }
         public User User { get; set; }
         
-        [Required]
         public Guid PostId { get; set; }
         public Post Post { get; set; }
     }
+    
 }

@@ -1,0 +1,131 @@
+using Microsoft.EntityFrameworkCore;
+using BachelorOppgaveBackend.Model;
+
+namespace BachelorOppgaveBackend.PostgreSQL
+{
+   public class ApplicationDbContext : DbContext
+   {
+       // This constructor must exist so you can register it as a service
+       public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+       { }
+
+       // Each DB set maps to a table in the database
+       public DbSet<UserRole> UsersRoles { get; set; }
+       public DbSet<User> Users { get; set; }
+       public DbSet<Category> Categories { get; set; }
+       public DbSet<Post> Posts { get; set; }
+       public DbSet<Status> Statuses { get; set; }
+       public DbSet<Comment> Comments { get; set; }
+       public DbSet<Vote> Votes { get; set; }
+       public DbSet<Favorit> Favorites { get; set; }
+       public DbSet<Notification> Notifications { get; set; }
+   }
+   
+   public class ApplicationDbInitializer
+   {
+       public void Initialize(ApplicationDbContext db)
+       {
+           // Delete the database before we initialize it. This is common to do during development.
+           db.Database.EnsureDeleted();
+
+           // Recreate the database and tables according to our models
+           db.Database.EnsureCreated();
+
+           
+           // Add UserRoles test data
+           var userRole = new[]
+           {
+               new UserRole("Admin", "Granted full permission"),
+               new UserRole("User", "Regular user. Can only manage their own content")
+           };
+
+           db.UsersRoles.AddRange(userRole);
+           db.SaveChanges(); // Finally save changes
+            
+           
+           // Add Users test data
+           var adminUser = db.UsersRoles.Where(t => t.Type == "Admin").FirstOrDefault();
+           var normalUser = db.UsersRoles.Where(t => t.Type == "User").FirstOrDefault();
+
+           var user = new[]
+           {
+                new User(adminUser, Guid.NewGuid(), "Admin", "admin@admin.admin"),
+                new User(normalUser, Guid.NewGuid(), "Trine Trynet", "trine@trynet.no"),
+                new User(normalUser, Guid.NewGuid(), "Jonny Bravo", "jonny@bravo.no"),
+                new User(normalUser, Guid.NewGuid(), "Hans Henrik", "hans@henrik.no")
+           };
+            
+           db.Users.AddRange(user);
+           db.SaveChanges();
+           
+           
+           // Add Categories test data
+           var category = new[]
+           {
+               new Category("Ris", "Noe som er negativt"),
+               new Category("Ros", "Noe som er positivt"),
+               new Category("Funksjonalitet", "Forslag til ny funksjonalitet")
+           };
+           
+           db.Categories.AddRange(category);
+           db.SaveChanges();
+           
+           
+           // Add Status test data
+           var s1 = new Status(null, "Pending", "Venter på svar");
+           var s2 = new Status(null, "Pending", "Venter på svar");
+
+           var status = new[]
+           {
+               s1, s2
+           };
+           
+           db.Statuses.AddRange(status);
+           db.SaveChanges();
+           
+           // Add Posts test data
+           var getUsers = db.Users.ToList();
+           var getRis = db.Categories.Where(r => r.Type == "Ris").FirstOrDefault();
+           var getRos = db.Categories.Where(r => r.Type == "Ros").FirstOrDefault();
+
+           var p1 = new Post(getUsers[0], getRis, s1,"Elendig UX design", "Kunne gjort det mye bedre selv");
+           var p2 = new Post(getUsers[1], getRos, s2, "Drit bra animasjoner", "10 av 10 animasjoner på forsiden. Dere har flinke utviklere"); 
+           
+           var post = new[]
+           {
+              p1, p2
+           };
+            
+           db.Posts.AddRange(post);
+           db.SaveChanges();
+
+           var c1 = new Comment(p1, getUsers[2], null, "Helt enig med deg");
+           var c1_1 = new Comment(p1, getUsers[1], null, "Dere er kjempe bra firma. Ikke hør på de andre!");
+
+           var c2 = new Comment(p1, getUsers[0], null, "Nei! Uenig. De har dårlige animasjoner");
+           var c2_2 = new Comment(p1, getUsers[2], null, "Kjempe dårlig ja!");
+
+           var comment = new[]
+           {
+            c1, c1_1, c2, c2_2
+           };
+
+           db.Comments.AddRange(comment);
+           db.SaveChanges();
+
+           var vote = new[]
+           {
+               new Vote(getUsers[0], p1),
+               new Vote(getUsers[1], p1),
+               new Vote(getUsers[2], p1),
+               new Vote(getUsers[0], p2),
+               new Vote(getUsers[1], p2)
+           };
+           
+           db.Votes.AddRange(vote);
+           db.SaveChanges();
+       }
+   }
+}
+
+

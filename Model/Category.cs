@@ -1,11 +1,28 @@
-﻿namespace BachelorOppgaveBackend.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BachelorOppgaveBackend.Model
 {
     public class Category
     {
-        public Guid id { get; set; }
-        public string? name { get; set; }
-        public string? description { get; set; }
+        public Category() {}
 
-        public DateTime created_at { get; set; }
+        public Category(string type, string description)
+        {
+            Type = type;
+            Description = description;
+            Created = DateTime.UtcNow;
+        }
+        
+        public Guid Id { get; set; }
+        
+        [Required]
+        public string? Type { get; set; }
+        
+        [Required]
+        public string? Description { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime Created { get; set; }
     }
 }

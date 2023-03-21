@@ -1,14 +1,35 @@
-﻿namespace BachelorOppgaveBackend.Model
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+
+namespace BachelorOppgaveBackend.Model
 {
     public class Status
     {
-        public Guid id { get; set; }
-        public Guid post_id { get; set; }
-        public Guid user_id { get; set; }
-        public string? status { get; set; }
+        public Status()
+        {
+            Created = DateTime.UtcNow;
+        }
 
-        public string? description { get; set; }
+        public Status(User user, string type, string description)
+        {
+            User = user;
+            Type = type;
+            Description = description;
+            Created = DateTime.UtcNow;
+        }
+        
+        public Guid Id { get; set; }
+        
+        [Required]
+        public string? Type { get; set; }
+    
+        public string? Description { get; set; }
 
-        public DateTime created_at { get; set; }
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime Created { get; set; }
+        
+        public Guid? UserId { get; set; }
+        public User? User { get; set; }
     }
 }

@@ -124,6 +124,16 @@ namespace BachelorOppgaveBackend.PostgreSQL
            
            db.Votes.AddRange(vote);
            db.SaveChanges();
+
+
+           var favoritt = new[]
+           {
+               new Favorit(getUsers[1], p1),
+               new Favorit(getUsers[1], p2)
+           };
+           
+           db.Favorites.AddRange(favoritt);
+           db.SaveChanges();
        }
    }
 }

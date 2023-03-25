@@ -22,7 +22,7 @@ public class PostController : ControllerBase
     
     
     [HttpGet]
-    public IActionResult GetPosts([FromHeader] Guid? userId, string? title, string? category)
+    public IActionResult GetPosts([FromHeader] Guid? userId, string? title, string? category, string? orderByDesc)
     {
         IQueryable<Post> posts = _context.Set<Post>();
         
@@ -34,7 +34,7 @@ public class PostController : ControllerBase
         {
             posts = posts.Where(p => p.Title.Contains(title));
         }
-        
+
         var res = posts.Select(p => new
         {
             p.Id,
@@ -46,21 +46,30 @@ public class PostController : ControllerBase
             category = new { p.CategoryId, p.Category.Type },
             status = new { p.StatusId, p.Status.Type },
             stared = _context.Favorites.Where(s => p.Id == s.PostId).Where(s => userId == s.UserId).FirstOrDefault() == null ? false : true,
-            liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).FirstOrDefault() == null ? false : true
-        }).ToList();
-        
-        if (res == null)
+            liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).FirstOrDefault() == null ? false : true,
+            comments = _context.Comments.Count(c => p.Id == c.PostId)
+        });
+
+        if (orderByDesc != null)
         {
-            return NotFound();
+            if (orderByDesc == "date")
+            {
+                res = res.OrderByDescending(c => c.Created);
+            }
+            else if (orderByDesc == "votes")
+            {
+                res = res.OrderByDescending(v => v.votes);
+
+            }
         }
         
-        return Ok(res);
+        return Ok(res.ToList());
     }
 
    
 
     [HttpGet("id/{id}")]
-    public IActionResult GetPostById(Guid id)
+    public IActionResult GetPostById([FromHeader] Guid userId, Guid id)
     {
         var posts = _context.Posts
             .Select(p => new
@@ -72,7 +81,10 @@ public class PostController : ControllerBase
                 votes = _context.Votes.Count(v => p.Id == v.PostId),
                 user = new { p.UserId, p.User.UserName, p.User.Email },
                 category = new { p.CategoryId, p.Category.Type },
-                status = new { p.StatusId, p.Status.Type }
+                status = new { p.StatusId, p.Status.Type },
+                stared = _context.Favorites.Where(s => p.Id == s.PostId).Where(s => userId == s.UserId).FirstOrDefault() == null ? false : true,
+                liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).FirstOrDefault() == null ? false : true,
+                comments = _context.Comments.Count(c => p.Id == c.PostId)
             })
             .Where(t => t.Id == id)
             .FirstOrDefault();

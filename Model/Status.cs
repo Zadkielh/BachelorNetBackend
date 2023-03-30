@@ -10,9 +10,9 @@ namespace BachelorOppgaveBackend.Model
             Created = DateTime.UtcNow;
         }
 
-        public Status(User user, string type, string description)
+        public Status(Guid user, string type, string description)
         {
-            User = user;
+            UserId = user;
             Type = type;
             Description = description;
             Created = DateTime.UtcNow;
@@ -30,6 +30,5 @@ namespace BachelorOppgaveBackend.Model
         public DateTime Created { get; set; }
         
         public Guid? UserId { get; set; }
-        public User? User { get; set; }
     }
 }

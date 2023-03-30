@@ -17,10 +17,20 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetUser()
+    public IActionResult GetUsers([FromHeader] Guid userId)
     {
-        var users = _context.Users.Include(r => r.UserRole).ToList();
-        if (users == null)
+        var user = _context.Users.Include(r => r.UserRole).Where(u => u.Id == userId).FirstOrDefault();
+        if (user == null)
+        {
+            return NotFound();
+        }
+        if (user.UserRole.Type != "Admin")
+        {
+            return Unauthorized("Invalid access");
+        }
+
+        var users = _context.Users.Include(r => r.UserRole).Take(100).ToList();
+        if (!users.Any())
         {
             return NotFound();
         }
@@ -55,9 +65,43 @@ public class UserController : ControllerBase
     }
 
     
-    [HttpPut]
-    public IActionResult Put()
+    [HttpPut("id/{id}")]
+    public IActionResult Put([FromHeader] Guid userId, Guid id, Guid? roleId, string? userName)
     {
+        var user = _context.Users.Include(r => r.UserRole).Where(u => u.Id == userId).FirstOrDefault();
+        if (user == null)
+        {
+            return NotFound();
+        }
+        if (user.UserRole.Type != "Admin")
+        {
+            return Unauthorized("Invalid access");
+        }
+
+        var u = _context.Users.Include(u => u.UserRole).Where(u => u.Id == id).FirstOrDefault();
+        if (u == null)
+        {
+            return NotFound("User not found");
+        }
+        
+        
+        if (roleId != null)
+        {
+            var role = _context.UsersRoles.Where(r => r.Id == roleId).FirstOrDefault();
+            if (role == null)
+            {
+                return NotFound("Role not found");
+            }
+
+            u.UserRole = role;
+        }
+
+        if (userName != null)
+        {
+            u.UserName = userName;
+        }
+
+        _context.SaveChanges();
         return Ok();
     }
 

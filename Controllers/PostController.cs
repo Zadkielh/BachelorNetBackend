@@ -41,7 +41,8 @@ public class PostController : ControllerBase
             p.Title,
             p.Description,
             p.Created,
-            votes = _context.Votes.Count(v => p.Id == v.PostId),
+            up_votes = _context.Votes.Where(v => v.Liked == true).Count(v => p.Id == v.PostId),
+            down_votes = _context.Votes.Where(v => v.Liked == false).Count(v => p.Id == v.PostId),
             user = new { p.UserId, p.User.UserName, p.User.Email },
             category = new { p.CategoryId, p.Category.Type },
             status = new { p.StatusId, p.Status.Type },
@@ -58,7 +59,7 @@ public class PostController : ControllerBase
             }
             else if (orderByDesc == "votes")
             {
-                res = res.OrderByDescending(v => v.votes);
+                res = res.OrderByDescending(v => v.up_votes);
 
             }
         }
@@ -78,7 +79,8 @@ public class PostController : ControllerBase
                 p.Title,
                 p.Description,
                 p.Created,
-                votes = _context.Votes.Count(v => p.Id == v.PostId),
+                up_votes = _context.Votes.Where(v => v.Liked == true).Count(v => p.Id == v.PostId),
+                down_votes = _context.Votes.Where(v => v.Liked == false).Count(v => p.Id == v.PostId),
                 user = new { p.UserId, p.User.UserName, p.User.Email },
                 category = new { p.CategoryId, p.Category.Type },
                 status = new { p.StatusId, p.Status.Type },

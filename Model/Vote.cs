@@ -6,13 +6,17 @@ namespace BachelorOppgaveBackend.Model
     {
         public Vote() {}
 
-        public Vote(User user, Post post)
+        public Vote(User user, Post post, bool liked)
         {
             User = user;
             Post = post;
+            Liked = liked;
             Created = DateTime.UtcNow;
         }
         public Guid Id { get; set; }
+        
+        [Required]
+        public bool Liked { get; set; }
         
         [Required]
         [DataType(DataType.DateTime)]

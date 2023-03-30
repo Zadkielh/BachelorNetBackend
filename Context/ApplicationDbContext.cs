@@ -104,10 +104,14 @@ namespace BachelorOppgaveBackend.PostgreSQL
 
            var c2 = new Comment(p1, getUsers[0], null, "Nei! Uenig. De har dårlige animasjoner");
            var c2_2 = new Comment(p1, getUsers[2], null, "Kjempe dårlig ja!");
+           
+           var c3 = new Comment(p2, getUsers[0], null, "blabla blabla");
+           var c3_3 = new Comment(p2, getUsers[2], null, "ding dong hong pong");
+
 
            var comment = new[]
            {
-            c1, c1_1, c2, c2_2
+            c1, c1_1, c2, c2_2, c3, c3_3
            };
 
            db.Comments.AddRange(comment);
@@ -115,11 +119,11 @@ namespace BachelorOppgaveBackend.PostgreSQL
 
            var vote = new[]
            {
-               new Vote(getUsers[0], p1),
-               new Vote(getUsers[1], p1),
-               new Vote(getUsers[2], p1),
-               new Vote(getUsers[0], p2),
-               new Vote(getUsers[1], p2)
+               new Vote(getUsers[0], p1, true),
+               new Vote(getUsers[1], p1, true),
+               new Vote(getUsers[2], p1, false),
+               new Vote(getUsers[0], p2, true),
+               new Vote(getUsers[1], p2, false)
            };
            
            db.Votes.AddRange(vote);

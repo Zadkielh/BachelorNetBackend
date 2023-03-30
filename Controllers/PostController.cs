@@ -85,7 +85,7 @@ public class PostController : ControllerBase
                 category = new { p.CategoryId, p.Category.Type },
                 status = new { p.StatusId, p.Status.Type },
                 stared = _context.Favorites.Where(s => p.Id == s.PostId).Where(s => userId == s.UserId).FirstOrDefault() == null ? false : true,
-                liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).FirstOrDefault() == null ? false : true,
+                liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).Select(v => new {v.Liked}).FirstOrDefault() ?? null,
                 comments = _context.Comments.Count(c => p.Id == c.PostId)
             })
             .Where(t => t.Id == id)

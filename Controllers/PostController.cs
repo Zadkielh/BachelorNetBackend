@@ -43,10 +43,10 @@ public class PostController : ControllerBase
             p.Created,
             up_votes = _context.Votes.Where(v => v.Liked == true).Count(v => p.Id == v.PostId),
             down_votes = _context.Votes.Where(v => v.Liked == false).Count(v => p.Id == v.PostId),
-            user = new { p.UserId, p.User.UserName, p.User.Email },
+            user = new {p.User.UserName, p.User.Email },
             category = new { p.CategoryId, p.Category.Type },
             status = new { p.StatusId, p.Status.Type },
-            stared = _context.Favorites.Where(s => p.Id == s.PostId).Where(s => userId == s.UserId).FirstOrDefault() == null ? false : true,
+            favorit = _context.Favorites.Where(s => p.Id == s.PostId).Where(s => userId == s.UserId).FirstOrDefault() == null ? false : true,
             liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).Select(v => new {v.Liked}).FirstOrDefault() ?? null,
             comments = _context.Comments.Count(c => p.Id == c.PostId)
         });
@@ -61,6 +61,10 @@ public class PostController : ControllerBase
             {
                 res = res.OrderByDescending(v => v.up_votes);
 
+            }
+            else if (orderByDesc == "comments") 
+            {
+                res = res.OrderByDescending(c => c.comments);
             }
         }
         
@@ -81,10 +85,10 @@ public class PostController : ControllerBase
                 p.Created,
                 up_votes = _context.Votes.Where(v => v.Liked == true).Count(v => p.Id == v.PostId),
                 down_votes = _context.Votes.Where(v => v.Liked == false).Count(v => p.Id == v.PostId),
-                user = new { p.UserId, p.User.UserName, p.User.Email },
+                user = new {p.User.UserName, p.User.Email },
                 category = new { p.CategoryId, p.Category.Type },
                 status = new { p.StatusId, p.Status.Type },
-                stared = _context.Favorites.Where(s => p.Id == s.PostId).Where(s => userId == s.UserId).FirstOrDefault() == null ? false : true,
+                favorit = _context.Favorites.Where(s => p.Id == s.PostId).Where(s => userId == s.UserId).FirstOrDefault() == null ? false : true,
                 liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).Select(v => new {v.Liked}).FirstOrDefault() ?? null,
                 comments = _context.Comments.Count(c => p.Id == c.PostId)
             })
@@ -120,8 +124,44 @@ public class PostController : ControllerBase
         _context.SaveChanges();
         return Ok();
     }
-    
 
+
+    [HttpPut("id/{id}")]
+    public IActionResult EditPost([FromHeader] Guid userId, Guid id, [FromForm] string? title, [FromForm] string? description)
+    {
+        var user = _context.Users.Include(u => u.UserRole).Where(u => u.Id == userId).FirstOrDefault();
+        if (user == null)
+        {
+            return NotFound();
+        }
+        
+        var post = _context.Posts.Include(u => u.User).Where(p => p.Id == id).FirstOrDefault();
+        if (post == null)
+        {
+            return NotFound();
+        }
+
+        if (title != null)
+        {
+            post.Title = title;
+        }
+
+        if (description != null)
+        {
+            post.Description = description;
+        }
+
+        if (user.Id == post.UserId || user.UserRole.Type == "Admin")
+        {
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        return NotFound("Invalid access");
+    }
+    
+    
+    
     [HttpDelete("id/{id}")]
     public IActionResult DeletePost([FromHeader] Guid userId, Guid id)
     {

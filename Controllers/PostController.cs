@@ -62,6 +62,10 @@ public class PostController : ControllerBase
                 res = res.OrderByDescending(v => v.up_votes);
 
             }
+            else if (orderByDesc == "comments") 
+            {
+                res = res.OrderByDescending(c => c.comments);
+            }
         }
         
         return Ok(res.ToList());

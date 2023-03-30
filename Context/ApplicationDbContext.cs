@@ -119,11 +119,11 @@ namespace BachelorOppgaveBackend.PostgreSQL
 
            var vote = new[]
            {
-               new Vote(getUsers[0], p1, true),
-               new Vote(getUsers[1], p1, true),
-               new Vote(getUsers[2], p1, false),
-               new Vote(getUsers[0], p2, true),
-               new Vote(getUsers[1], p2, false)
+               new Vote(getUsers[0].Id, p1.Id, true),
+               new Vote(getUsers[1].Id, p1.Id, true),
+               new Vote(getUsers[2].Id, p1.Id, false),
+               new Vote(getUsers[0].Id, p2.Id, true),
+               new Vote(getUsers[1].Id, p2.Id, false)
            };
            
            db.Votes.AddRange(vote);

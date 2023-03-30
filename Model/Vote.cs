@@ -6,10 +6,10 @@ namespace BachelorOppgaveBackend.Model
     {
         public Vote() {}
 
-        public Vote(User user, Post post, bool liked)
+        public Vote(Guid userId, Guid postId, bool liked)
         {
-            User = user;
-            Post = post;
+            UserId = userId;
+            PostId = postId;
             Liked = liked;
             Created = DateTime.UtcNow;
         }
@@ -23,11 +23,8 @@ namespace BachelorOppgaveBackend.Model
         public DateTime Created { get; set; }
         
         [Required]
-        public Guid UserId { get; set; }
-        public User User { get; set; }
-        
+        public Guid UserId { get; set; }        
         [Required]
         public Guid PostId { get; set; }
-        public Post Post { get; set; }
     }
 }

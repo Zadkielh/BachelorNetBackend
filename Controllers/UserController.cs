@@ -117,6 +117,7 @@ public class UserController : ControllerBase
             u.UserName = userName;
         }
 
+        _context.Users.Update(u);
         _context.SaveChanges();
         return Ok();
     }

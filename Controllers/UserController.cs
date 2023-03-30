@@ -17,7 +17,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetUsers([FromHeader] Guid userId)
+    public IActionResult GetUsers([FromHeader] Guid userId, string? userName, Guid? userRoleId, string? orderByDesc)
     {
         var user = _context.Users.Include(r => r.UserRole).Where(u => u.Id == userId).FirstOrDefault();
         if (user == null)
@@ -29,7 +29,23 @@ public class UserController : ControllerBase
             return Unauthorized("Invalid access");
         }
 
-        var users = _context.Users.Include(r => r.UserRole).Take(100).ToList();
+        IQueryable<User> users = _context.Set<User>();
+
+        if(userName != null)
+        {
+            users = users.Where(u => u.UserName.Contains(userName));
+        }
+        if(userRoleId != null) 
+        {
+            users = users.Where(u => u.UserRoleId == userRoleId);
+        }
+        if(orderByDesc == "date")
+        {
+            users = users.OrderByDescending(u => u.Created);
+        }
+        
+        users.Include(r => r.UserRole).Take(100).ToList();
+
         if (!users.Any())
         {
             return NotFound();
@@ -66,7 +82,7 @@ public class UserController : ControllerBase
 
     
     [HttpPut("id/{id}")]
-    public IActionResult Put([FromHeader] Guid userId, Guid id, Guid? roleId, string? userName)
+    public IActionResult Put([FromHeader] Guid userId, Guid id, Guid? userRoleId, string? userName)
     {
         var user = _context.Users.Include(r => r.UserRole).Where(u => u.Id == userId).FirstOrDefault();
         if (user == null)
@@ -85,9 +101,9 @@ public class UserController : ControllerBase
         }
         
         
-        if (roleId != null)
+        if (userRoleId != null)
         {
-            var role = _context.UsersRoles.Where(r => r.Id == roleId).FirstOrDefault();
+            var role = _context.UsersRoles.Where(r => r.Id == userRoleId).FirstOrDefault();
             if (role == null)
             {
                 return NotFound("Role not found");

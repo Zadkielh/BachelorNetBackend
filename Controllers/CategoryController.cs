@@ -1,6 +1,11 @@
+using System.Diagnostics.Metrics;
+using System.Runtime.InteropServices.ComTypes;
 using BachelorOppgaveBackend.Model;
 using Microsoft.AspNetCore.Mvc;
 using BachelorOppgaveBackend.PostgreSQL;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace BachelorOppgaveBackend.Controllers;
 
@@ -29,22 +34,78 @@ public class CategoryController : ControllerBase
     
     
     [HttpPost]
-    public IActionResult Post()
+    public IActionResult Post([FromHeader] Guid userId, [FromForm] string type, [FromForm] string description)
     {
+
+        var user = _context.Users.Where(u => u.Id == userId).Include(u => u.UserRole).FirstOrDefault();
+        if(user == null)
+        {
+            return NotFound();
+        }
+        if(user.UserRole.Type != "Admin") 
+        {
+            return Unauthorized("Invalid access");
+        }
+
+        var cat = new Category(type, description);
+        _context.Add(cat);
+        _context.SaveChanges();
+
         return Ok();
     }
 
     
-    [HttpPut]
-    public IActionResult Put()
+    [HttpPut("id/{id}")]
+    public IActionResult Put([FromHeader] Guid userId, Guid id, [FromForm] string? type, [FromForm] string? description)
     {
+        var user = _context.Users.Where(u => u.Id == userId).Include(u => u.UserRole).FirstOrDefault();
+        if(user == null)
+        {
+            return NotFound();
+        }
+        if(user.UserRole.Type != "Admin") 
+        {
+            return Unauthorized("Invalid access");
+        }
+
+        var cat = _context.Categories.Where(c => c.Id == id).FirstOrDefault();
+        if(cat == null){
+            return NotFound();
+        }
+
+        if(type != null){
+            cat.Type = type;
+        }
+        if(description != null){
+            cat.Description = description;
+        }
+
+        _context.Update(cat);
+        _context.SaveChanges();
         return Ok();
     }
 
     
-    [HttpDelete]
-    public IActionResult Delete()
+    [HttpDelete("id/{id}")]
+    public IActionResult Delete([FromHeader] Guid userId, Guid id)
     {
+        var user = _context.Users.Where(u => u.Id == userId).Include(u => u.UserRole).FirstOrDefault();
+        if(user == null)
+        {
+            return NotFound();
+        }
+        if(user.UserRole.Type != "Admin") 
+        {
+            return Unauthorized("Invalid access");
+        }
+
+        var cat = _context.Categories.Where(c => c.Id == id).FirstOrDefault();
+        if(cat == null){
+            return NotFound();
+        }
+
+        _context.Remove(cat);
+        _context.SaveChanges();
         return Ok();
     }
 

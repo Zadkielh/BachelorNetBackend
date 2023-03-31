@@ -74,7 +74,7 @@ namespace BachelorOppgaveBackend.Controllers
 
             var vote = _context.Votes.Where(u => u.PostId == postId).Where(u => u.UserId == userId).FirstOrDefault();
 
-            var s = new Status(null, "Venter", "Venter på svar");
+            var s = new Status(Guid.Empty, "Venter", "Venter på svar");
 
             Vote p;
             switch(direction)

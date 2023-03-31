@@ -118,7 +118,7 @@ public class PostController : ControllerBase
             return NotFound("Invaild category");
         }
 
-        var s = new Status(null, "Venter", "Venter på svar");
+        var s = new Status(Guid.Empty, "Venter", "Venter på svar");
         var p = new Post(user, category, s, post.title ?? "", post.description ?? "");
         _context.Posts.Add(p);
         _context.SaveChanges();

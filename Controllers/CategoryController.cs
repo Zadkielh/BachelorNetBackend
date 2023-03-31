@@ -34,7 +34,7 @@ public class CategoryController : ControllerBase
     
     
     [HttpPost]
-    public IActionResult Post([FromHeader] Guid userId, [FromBody] string type, [FromBody] string description)
+    public IActionResult Post([FromHeader] Guid userId, [FromForm] string type, [FromForm] string description)
     {
 
         var user = _context.Users.Where(u => u.Id == userId).Include(u => u.UserRole).FirstOrDefault();
@@ -56,7 +56,7 @@ public class CategoryController : ControllerBase
 
     
     [HttpPut("id/{id}")]
-    public IActionResult Put([FromHeader] Guid userId, Guid id, [FromBody] string? type, [FromBody] string? description)
+    public IActionResult Put([FromHeader] Guid userId, Guid id, [FromForm] string? type, [FromForm] string? description)
     {
         var user = _context.Users.Where(u => u.Id == userId).Include(u => u.UserRole).FirstOrDefault();
         if(user == null)

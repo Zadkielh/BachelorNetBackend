@@ -6,11 +6,11 @@ namespace BachelorOppgaveBackend.Model
     {
         public Comment() {}
 
-        public Comment(Post post, User user, Comment subComment, string content)
+        public Comment(Post post, User user, Guid parentComment, string content)
         {
             Post = post;
             User = user;
-            SubComment = subComment;
+            ParentCommentId = parentComment;
             Content = content;
             Created = DateTime.UtcNow;
         }
@@ -18,7 +18,7 @@ namespace BachelorOppgaveBackend.Model
         public Guid Id { get; set; }
         
         [Required]
-        public string? Content { get; set; }
+        public string Content { get; set; }
         
         [Required]
         [DataType(DataType.DateTime)]
@@ -32,8 +32,7 @@ namespace BachelorOppgaveBackend.Model
         public Guid UserId { get; set; }
         public User User { get; set; }
         
-        public Guid? CommentId { get; set; }
-        public Comment? SubComment { get; set; }
+        public Guid? ParentCommentId { get; set; }
         
     }
 }

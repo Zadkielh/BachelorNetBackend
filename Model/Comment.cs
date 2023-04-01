@@ -6,11 +6,11 @@ namespace BachelorOppgaveBackend.Model
     {
         public Comment() {}
 
-        public Comment(Post post, User user, Guid parentComment, string content)
+        public Comment(Post post, User user, Comment? parentComment, string content)
         {
             Post = post;
             User = user;
-            ParentCommentId = parentComment;
+            ParentComment = parentComment;
             Content = content;
             Created = DateTime.UtcNow;
         }
@@ -33,6 +33,20 @@ namespace BachelorOppgaveBackend.Model
         public User User { get; set; }
         
         public Guid? ParentCommentId { get; set; }
+        public Comment? ParentComment {get; set;}
         
+    }
+
+    public class CommentList 
+    {
+        public CommentList(){}
+
+        public Guid Id {get; set;}
+
+        public string Content {get; set;}
+
+        public Guid? ParentCommentId {get; set;}
+
+        public List<CommentList>? ParentComment {get; set;}
     }
 }

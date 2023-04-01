@@ -99,19 +99,21 @@ namespace BachelorOppgaveBackend.PostgreSQL
            db.Posts.AddRange(post);
            db.SaveChanges();
 
-           var c1 = new Comment(p1, getUsers[2], Guid.Empty, "Helt enig med deg");
-           var c1_1 = new Comment(p1, getUsers[1], c1.Id, "Dere er kjempe bra firma. Ikke hør på de andre!");
+           var c1 = new Comment(p1, getUsers[2], null, "Helt enig med deg");
+           var c1_1 = new Comment(p1, getUsers[1], c1, "Dere er kjempe bra firma. Ikke hør på de andre!");
 
-           var c2 = new Comment(p1, getUsers[0], Guid.Empty, "Nei! Uenig. De har dårlige animasjoner");
-           var c2_2 = new Comment(p1, getUsers[2], c2.Id, "Kjempe dårlig ja!");
+           var c2 = new Comment(p1, getUsers[0], null, "Nei! Uenig. De har dårlige animasjoner");
+           var c2_2 = new Comment(p1, getUsers[2], c2, "Kjempe dårlig ja!");
            
-           var c3 = new Comment(p2, getUsers[0], Guid.Empty, "blabla blabla");
-           var c3_3 = new Comment(p2, getUsers[2], c3.Id, "ding dong hong pong");
+           var c3 = new Comment(p2, getUsers[0], null, "blabla blabla");
+           var c3_3 = new Comment(p2, getUsers[2], c3, "ding dong hong pong");
+           var c3_3_3 = new Comment(p2, getUsers[1], c3_3, "ding dong hong pong");
+
 
 
            var comment = new[]
            {
-            c1, c1_1, c2, c2_2, c3, c3_3
+            c1, c1_1, c2, c2_2, c3, c3_3, c3_3_3
            };
 
            db.Comments.AddRange(comment);

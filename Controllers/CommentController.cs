@@ -19,38 +19,49 @@ namespace BachelorOppgaveBackend.Controllers
             _context = context;
         }
 
-        private void recComments(Comment com, List<Comment> list) 
-        {
-            var sub = _context.Comments.Where(c => c.ParentCommentId == com.Id).ToList();
-            if (sub != null)
+        private List<CommentList> recComments(Guid c) 
+        {   
+            var parentComments = _context.Comments.Where(c => c.ParentCommentId == c.Id).
+              Select(c => new CommentList
             {
-                list.AddRange(sub);
-                foreach (var comment in sub)
-                {
-                    recComments(comment, list);
-                }
-            } 
+                Id = c.Id,
+                Content = c.Content,
+                ParentCommentId = c.ParentCommentId
+            }).ToList();
+
+            if (parentComments.Count() == 0) {
+                return new List<CommentList>();
+            }
+
+             for (int i = 0; i < parentComments.Count(); i++) {
+                parentComments[i].ParentComment = recComments(parentComments[i].Id);
+            }
+            
+            return parentComments;
         }
 
         [HttpGet]
         public IActionResult GetCommentsFromPost([FromHeader] Guid userId, [FromHeader] Guid postId)
         {
-            List<Comment> comments = new List<Comment>();
             //var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
-            var parentComments = _context.Comments.Where(c => c.PostId == postId).Where(c => c.ParentCommentId == Guid.Empty).ToList();
-            if (parentComments == null)
+            var parentComments = _context.Comments.Include(p => p.ParentComment).Where(c => c.PostId == postId).Where(c => c.ParentCommentId == null).
+            Select(c => new CommentList
+            {
+                Id = c.Id,
+                Content = c.Content,
+                ParentCommentId = c.ParentCommentId
+            }).ToList();
+            
+             if (parentComments.Count() == 0)
             {
                 return NotFound("No comments found.");
             }
-            comments.AddRange(parentComments);
-
-            foreach (var comment in parentComments)
-            {
-                recComments(comment, comments);
+            
+            for (int i = 0; i < parentComments.Count(); i++) {
+                parentComments[i].ParentComment = recComments(parentComments[i].Id);
             }
-            
-            
-            return Ok(comments);
+
+            return Ok(parentComments);
         }
 
 
@@ -63,7 +74,7 @@ namespace BachelorOppgaveBackend.Controllers
             var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
             if (post == null) { return NotFound("Invalid Post"); }
 
-            var comment = new Comment(post, user, Guid.Empty, content);
+            var comment = new Comment(post, user, null, content);
 
             var parentComment = _context.Comments.Where(c => c.Id == parentId).FirstOrDefault();
             if (parentComment != null) 

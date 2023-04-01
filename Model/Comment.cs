@@ -45,6 +45,10 @@ namespace BachelorOppgaveBackend.Model
 
         public string Content {get; set;}
 
+        public DateTime Created {get; set;}
+
+        public Guid PostId {get; set;}
+
         public Guid? ParentCommentId {get; set;}
 
         public List<CommentList>? ParentComment {get; set;}

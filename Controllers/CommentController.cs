@@ -19,37 +19,45 @@ namespace BachelorOppgaveBackend.Controllers
             _context = context;
         }
 
-        private List<CommentList> recComments(Guid c) 
+        private List<CommentList> recComments(Guid cc, Guid postId) 
         {   
-            var parentComments = _context.Comments.Where(c => c.ParentCommentId == c.Id).
+            var parentComments = _context.Comments.Where(p => p.PostId == postId).Include(p => p.ParentComment).Where(c => c.ParentComment.Id == cc).
               Select(c => new CommentList
             {
                 Id = c.Id,
                 Content = c.Content,
-                ParentCommentId = c.ParentCommentId
+                Created = c.Created,
+                PostId = c.PostId,
+                ParentCommentId = c.ParentComment.Id
             }).ToList();
 
-            if (parentComments.Count() == 0) {
+            Console.WriteLine("lenght: " + parentComments.Count());
+
+            if (parentComments == null) {
                 return new List<CommentList>();
             }
 
-             for (int i = 0; i < parentComments.Count(); i++) {
-                parentComments[i].ParentComment = recComments(parentComments[i].Id);
+            for (int i = 0; i < parentComments.Count(); i++) {
+                parentComments[i].ParentComment = recComments(parentComments[i].Id, postId);
+                Console.WriteLine("subcomment" + i);
             }
-            
             return parentComments;
+            
+            
         }
 
         [HttpGet]
         public IActionResult GetCommentsFromPost([FromHeader] Guid userId, [FromHeader] Guid postId)
         {
             //var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
-            var parentComments = _context.Comments.Include(p => p.ParentComment).Where(c => c.PostId == postId).Where(c => c.ParentCommentId == null).
+            var parentComments = _context.Comments.Where(c => c.PostId == postId).Include(p => p.ParentComment).Where(p => p.ParentCommentId == null).
             Select(c => new CommentList
             {
                 Id = c.Id,
                 Content = c.Content,
-                ParentCommentId = c.ParentCommentId
+                Created = c.Created,
+                PostId = c.PostId,
+                ParentCommentId = c.ParentComment.Id
             }).ToList();
             
              if (parentComments.Count() == 0)
@@ -58,7 +66,8 @@ namespace BachelorOppgaveBackend.Controllers
             }
             
             for (int i = 0; i < parentComments.Count(); i++) {
-                parentComments[i].ParentComment = recComments(parentComments[i].Id);
+                parentComments[i].ParentComment = recComments(parentComments[i].Id, postId);
+                Console.WriteLine("init comment" + i);
             }
 
             return Ok(parentComments);

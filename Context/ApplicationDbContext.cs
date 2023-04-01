@@ -105,9 +105,9 @@ namespace BachelorOppgaveBackend.PostgreSQL
            var c2 = new Comment(p1, getUsers[0], null, "Nei! Uenig. De har dårlige animasjoner");
            var c2_2 = new Comment(p1, getUsers[2], c2, "Kjempe dårlig ja!");
            
-           var c3 = new Comment(p2, getUsers[0], null, "blabla blabla");
-           var c3_3 = new Comment(p2, getUsers[2], c3, "ding dong hong pong");
-           var c3_3_3 = new Comment(p2, getUsers[1], c3_3, "ding dong hong pong");
+           var c3 = new Comment(p2, getUsers[0], null, "blabla blabla Parent");
+           var c3_3 = new Comment(p2, getUsers[2], c3, "ding dong hong pong child 1");
+           var c3_3_3 = new Comment(p2, getUsers[1], c3_3, "ding dong hong pong child 2");
 
 
 

@@ -21,13 +21,25 @@ namespace BachelorOppgaveBackend.Controllers
 
         private void recComments(Comment com, List<Comment> list) 
         {
-            var sub = _context.Comments.Where(c => c.ParentCommentId == com.Id).ToList();
+            var sub = _context.Comments.Where(c => c.ParentComment == com).ToList();
             if (sub != null)
             {
-                list.AddRange(sub);
                 foreach (var comment in sub)
                 {
+                    if (!list.Contains(comment)) // Does list contain bottom comment?
+                    {
+                        if (com != null)
+                        {
+                            if (list.Contains(com)) // Check if parent exists, and if exists check if within list.
+                            {
+                                list.Remove(com); // Add comments to list.
+                            }
+                            list.Add(comment);
+                        }
+
+                    }
                     recComments(comment, list);
+
                 }
             } 
         }
@@ -37,7 +49,7 @@ namespace BachelorOppgaveBackend.Controllers
         {
             List<Comment> comments = new List<Comment>();
             //var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
-            var parentComments = _context.Comments.Where(c => c.PostId == postId).Where(c => c.ParentCommentId == Guid.Empty).ToList();
+            var parentComments = _context.Comments.Where(c => c.PostId == postId).Where(c => c.ParentComment == null).ToList();
             if (parentComments == null)
             {
                 return NotFound("No comments found.");
@@ -63,12 +75,13 @@ namespace BachelorOppgaveBackend.Controllers
             var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
             if (post == null) { return NotFound("Invalid Post"); }
 
-            var comment = new Comment(post, user, Guid.Empty, content);
+            var comment = new Comment(post, user, null, content);
 
             var parentComment = _context.Comments.Where(c => c.Id == parentId).FirstOrDefault();
             if (parentComment != null) 
             {
-                comment.ParentCommentId= parentId;
+                comment.ParentComment = parentComment;
+                comment.ParentCommentId = parentId;
             }
 
             _context.Comments.Add(comment);

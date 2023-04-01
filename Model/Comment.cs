@@ -34,23 +34,7 @@ namespace BachelorOppgaveBackend.Model
         
         public Guid? ParentCommentId { get; set; }
         public Comment? ParentComment {get; set;}
+        public List<Comment>? ChildrenComments {get; set;}
         
-    }
-
-    public class CommentList 
-    {
-        public CommentList(){}
-
-        public Guid Id {get; set;}
-
-        public string Content {get; set;}
-
-        public DateTime Created {get; set;}
-
-        public Guid PostId {get; set;}
-
-        public Guid? ParentCommentId {get; set;}
-
-        public List<CommentList>? ParentComment {get; set;}
     }
 }

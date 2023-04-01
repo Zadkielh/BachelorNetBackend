@@ -19,31 +19,26 @@ namespace BachelorOppgaveBackend.Controllers
             _context = context;
         }
 
-        private List<CommentList> recComments(Guid cc, Guid postId) 
+        private List<Comment> recComments(Guid cc, Guid postId) 
         {   
             var parentComments = _context.Comments.Where(p => p.PostId == postId).Include(p => p.ParentComment).Where(c => c.ParentComment.Id == cc).
-              Select(c => new CommentList
+              Select(c => new Comment
             {
                 Id = c.Id,
                 Content = c.Content,
                 Created = c.Created,
-                PostId = c.PostId,
-                ParentCommentId = c.ParentComment.Id
+                PostId = c.PostId
             }).ToList();
 
-            Console.WriteLine("lenght: " + parentComments.Count());
-
-            if (parentComments == null) {
-                return new List<CommentList>();
+            if (parentComments.Count() == 0) {
+                return new List<Comment>();
             }
 
             for (int i = 0; i < parentComments.Count(); i++) {
-                parentComments[i].ParentComment = recComments(parentComments[i].Id, postId);
-                Console.WriteLine("subcomment" + i);
+                parentComments[i].ChildrenComments = recComments(parentComments[i].Id, postId);
             }
+
             return parentComments;
-            
-            
         }
 
         [HttpGet]
@@ -51,13 +46,12 @@ namespace BachelorOppgaveBackend.Controllers
         {
             //var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
             var parentComments = _context.Comments.Where(c => c.PostId == postId).Include(p => p.ParentComment).Where(p => p.ParentCommentId == null).
-            Select(c => new CommentList
+            Select(c => new Comment
             {
                 Id = c.Id,
                 Content = c.Content,
                 Created = c.Created,
-                PostId = c.PostId,
-                ParentCommentId = c.ParentComment.Id
+                PostId = c.PostId
             }).ToList();
             
              if (parentComments.Count() == 0)
@@ -66,7 +60,7 @@ namespace BachelorOppgaveBackend.Controllers
             }
             
             for (int i = 0; i < parentComments.Count(); i++) {
-                parentComments[i].ParentComment = recComments(parentComments[i].Id, postId);
+                parentComments[i].ChildrenComments = recComments(parentComments[i].Id, postId);
                 Console.WriteLine("init comment" + i);
             }
 

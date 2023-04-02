@@ -124,7 +124,7 @@ namespace BachelorOppgaveBackend.Controllers
         }
 
 
-        [HttpDelete("/{id}")]
+        [HttpDelete("delete/{id}")]
         public IActionResult DeleteComment([FromHeader][Required] Guid userId, Guid id)
         {
             var user = _context.Users.Where(u => u.Id == userId).Include(u => u.UserRole).FirstOrDefault();

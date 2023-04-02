@@ -1,8 +1,10 @@
 ﻿using BachelorOppgaveBackend.Model;
 using BachelorOppgaveBackend.PostgreSQL;
+using BachelorOppgaveBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using System.Runtime.Loader;
 
 namespace BachelorOppgaveBackend.Controllers
 {
@@ -12,10 +14,12 @@ namespace BachelorOppgaveBackend.Controllers
     public class VoteController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INotificationManager _notificationManager;
 
-        public VoteController(ApplicationDbContext context)
+        public VoteController(ApplicationDbContext context, INotificationManager notificationManager)
         {
             _context = context;
+            _notificationManager = notificationManager;
         }
 
         [HttpGet("user")]
@@ -74,8 +78,6 @@ namespace BachelorOppgaveBackend.Controllers
 
             var vote = _context.Votes.Where(u => u.PostId == postId).Where(u => u.UserId == userId).FirstOrDefault();
 
-            var s = new Status(Guid.Empty, "Venter", "Venter på svar");
-
             Vote p;
             switch(direction)
             {
@@ -84,6 +86,7 @@ namespace BachelorOppgaveBackend.Controllers
                     {
                         vote.Liked = true;
                         _context.Votes.Update(vote);
+                        _notificationManager.AddNotificationToUsers(postId, null, "liked");
                         break;
                     }
 

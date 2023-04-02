@@ -30,5 +30,6 @@ namespace BachelorOppgaveBackend.Model
         public DateTime Created { get; set; }
         
         public Guid? UserId { get; set; }
+        public User User { get; set; }
     }
 }

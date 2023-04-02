@@ -2,11 +2,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BachelorOppgaveBackend.Model
 {
-    public class Favorit
+    public class Favorite
     {
-        public Favorit() {}
+        public Favorite() {}
 
-        public Favorit(User user, Post post)
+        public Favorite(User user, Post post)
         {
             User = user;
             Post = post;

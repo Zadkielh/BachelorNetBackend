@@ -75,7 +75,7 @@ namespace BachelorOppgaveBackend.Controllers
                 status.UserId = userId;
                 _context.Statuses.Update(status);
 
-                _notificationManager.AddNotificationToUsers(postId, null, $"statusChanged {type}");
+                _notificationManager.AddNotificationToUsers(postId, null, $"statusChanged: {type}");
 
                 _context.SaveChanges();
                 return Ok();

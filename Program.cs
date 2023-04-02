@@ -3,7 +3,7 @@ using BachelorOppgaveBackend.PostgreSQL;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-
+using BachelorOppgaveBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +20,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-
 builder.Services.AddDbContext<ApplicationDbContext>(options=> 
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnection"));
 });
+
+builder.Services.AddTransient<INotificationManager, NotificationManager>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -33,7 +34,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseCors(AllowAllOrigin);
 

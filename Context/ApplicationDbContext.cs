@@ -17,7 +17,7 @@ namespace BachelorOppgaveBackend.PostgreSQL
        public DbSet<Status> Statuses { get; set; }
        public DbSet<Comment> Comments { get; set; }
        public DbSet<Vote> Votes { get; set; }
-       public DbSet<Favorit> Favorites { get; set; }
+       public DbSet<Favorite> Favorites { get; set; }
        public DbSet<Notification> Notifications { get; set; }
    }
    
@@ -134,8 +134,8 @@ namespace BachelorOppgaveBackend.PostgreSQL
 
            var favoritt = new[]
            {
-               new Favorit(getUsers[1], p1),
-               new Favorit(getUsers[1], p2)
+               new Favorite(getUsers[1], p1),
+               new Favorite(getUsers[1], p2)
            };
            
            db.Favorites.AddRange(favoritt);

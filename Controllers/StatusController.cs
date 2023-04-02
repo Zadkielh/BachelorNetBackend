@@ -1,4 +1,5 @@
 ﻿using BachelorOppgaveBackend.PostgreSQL;
+using BachelorOppgaveBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +10,13 @@ namespace BachelorOppgaveBackend.Controllers
     public class StatusController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INotificationManager _notificationManager;
 
-        public StatusController(ApplicationDbContext context)
+
+        public StatusController(ApplicationDbContext context, INotificationManager notificationManager)
         {
             _context = context;
+            _notificationManager = notificationManager;
         }
 
         [HttpGet("post/{id}")]
@@ -70,6 +74,8 @@ namespace BachelorOppgaveBackend.Controllers
                 status.Description = description;
                 status.UserId = userId;
                 _context.Statuses.Update(status);
+
+                _notificationManager.AddNotificationToUsers(postId, null, $"statusChanged {type}");
 
                 _context.SaveChanges();
                 return Ok();

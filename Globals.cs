@@ -1,4 +1,6 @@
 
+using BachelorOppgaveBackend.Controllers;
+
 namespace BachelorOppgaveBackend
 {
 

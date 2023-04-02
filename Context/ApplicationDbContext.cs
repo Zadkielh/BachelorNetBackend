@@ -69,11 +69,13 @@ namespace BachelorOppgaveBackend.PostgreSQL
            
            db.Categories.AddRange(category);
            db.SaveChanges();
-           
+                   
+            // Get users
+           var getUsers = db.Users.ToList();
            
            // Add Status test data
-           var s1 = new Status(Guid.Empty, "Pending", "Venter på svar");
-           var s2 = new Status(Guid.Empty, "Pending", "Venter på svar");;
+           var s1 = new Status(null, "Pending", "Venter på svar");
+           var s2 = new Status(null, "Pending", "Venter på svar");;
 
            var status = new[]
            {
@@ -83,8 +85,8 @@ namespace BachelorOppgaveBackend.PostgreSQL
            db.Statuses.AddRange(status);
            db.SaveChanges();
            
-           // Add Posts test data
-           var getUsers = db.Users.ToList();
+
+           // Add Post test data
            var getRis = db.Categories.Where(r => r.Type == "Ris").FirstOrDefault();
            var getRos = db.Categories.Where(r => r.Type == "Ros").FirstOrDefault();
 

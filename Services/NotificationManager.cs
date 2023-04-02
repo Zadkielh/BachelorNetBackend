@@ -31,6 +31,12 @@ namespace BachelorOppgaveBackend.Services
                 {
                     users.Add(user);
                 }
+
+                var favourites = _dbContext.Favorites.Where(f => f.PostId == postId).ToList();
+                foreach (var fav in favourites)
+                {
+                    users.Add(fav.User);
+                }
             }
 
             var comment = _dbContext.Comments.Where(c => c.Id == commentId).FirstOrDefault();
@@ -44,7 +50,7 @@ namespace BachelorOppgaveBackend.Services
 
             }
 
-            // Fetch Favourites users here
+            
 
             foreach (var user in users)
             {

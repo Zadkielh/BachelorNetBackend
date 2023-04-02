@@ -21,13 +21,18 @@ namespace BachelorOppgaveBackend.Controllers
 
         private List<Comment> recComments(Guid cc, Guid postId) 
         {   
-            var parentComments = _context.Comments.Where(p => p.PostId == postId).Include(p => p.ParentComment).Where(c => c.ParentComment.Id == cc).
+            var parentComments = _context.Comments.Include(u => u.User).Include(r => r.User.UserRole).Where(p => p.PostId == postId).Include(p => p.ParentComment).Where(c => c.ParentComment.Id == cc).
               Select(c => new Comment
             {
                 Id = c.Id,
                 Content = c.Content,
                 Created = c.Created,
-                PostId = c.PostId
+                PostId = c.PostId,
+                User = new User{
+                    UserName = c.User.UserName,
+                    Email = c.User.Email,
+                    UserRole = c.User.UserRole
+                }
             }).ToList();
 
             if (parentComments.Count() == 0) {
@@ -45,13 +50,18 @@ namespace BachelorOppgaveBackend.Controllers
         public IActionResult GetCommentsFromPost([FromHeader] Guid userId, [FromHeader] Guid postId)
         {
             //var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
-            var parentComments = _context.Comments.Where(c => c.PostId == postId).Include(p => p.ParentComment).Where(p => p.ParentCommentId == null).
+            var parentComments = _context.Comments.Include(u => u.User).Include(r => r.User.UserRole).Where(c => c.PostId == postId).Include(p => p.ParentComment).Where(p => p.ParentCommentId == null).
             Select(c => new Comment
             {
                 Id = c.Id,
                 Content = c.Content,
                 Created = c.Created,
-                PostId = c.PostId
+                PostId = c.PostId,
+                User = new User{
+                    UserName = c.User.UserName,
+                    Email = c.User.Email,
+                    UserRole = c.User.UserRole
+                }
             }).ToList();
             
              if (parentComments.Count() == 0)

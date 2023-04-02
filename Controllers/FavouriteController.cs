@@ -19,7 +19,12 @@ namespace BachelorOppgaveBackend.Controllers
         [HttpGet]
         public IActionResult Get([Required][FromHeader] Guid userId)
         {
-            var favourites = _context.Favorites.Where(f => f.UserId == userId).ToList();
+            var favourites = _context.Favorites.Where(f => f.UserId == userId).Select(f => new Favorite
+            {
+                Id = f.Id,
+                PostId = f.PostId,
+                Created = DateTime.Now,
+            }).ToList();
             if (favourites.Any()) { return Ok(favourites); }
             return NotFound();
         }

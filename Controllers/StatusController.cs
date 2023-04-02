@@ -1,4 +1,5 @@
-﻿using BachelorOppgaveBackend.PostgreSQL;
+﻿using BachelorOppgaveBackend.Model;
+using BachelorOppgaveBackend.PostgreSQL;
 using BachelorOppgaveBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,14 @@ namespace BachelorOppgaveBackend.Controllers
                 return NotFound();
             }
 
-            var status = _context.Statuses.Where(s => s.Id == post.StatusId).FirstOrDefault();
+            var status = _context.Statuses.Where(s => s.Id == post.StatusId).Select(s => new Status
+            {
+                Id = s.Id,
+                Created= DateTime.Now,
+                Description= s.Description,
+                Type= s.Type,
+            }).FirstOrDefault();
+
             if (status == null)
             {
                 return NotFound();

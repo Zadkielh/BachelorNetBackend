@@ -25,7 +25,31 @@ namespace BachelorOppgaveBackend.Controllers
         [HttpGet("user")]
         public IActionResult GetUserVotes([FromHeader] Guid userId)
         {
-            var votes = _context.Votes.Where(u => u.UserId == userId).ToList();
+            var votes = _context.Votes.Where(u => u.UserId == userId).Select(v => new Vote
+            {
+                Created = v.Created,
+                Id = v.Id,
+                Liked = v.Liked,
+                Post = new Post
+                {
+                    Id = v.Post.Id,
+                    Category = v.Post.Category,
+                    Created = v.Post.Created,
+                    Status = new Status
+                    {
+                        Type = v.Post.Status.Type,
+                        Description = v.Post.Status.Description,
+                        Created = v.Post.Status.Created
+                    },
+                    User = new User
+                    {
+                        UserName = v.Post.User.UserName,
+                        Email = v.Post.User.Email,
+                    },
+                    Description = v.Post.Description,
+                    Title = v.Post.Title,
+                },
+            }).ToList();
             if (votes == null)
             {
                 return NotFound();
@@ -50,7 +74,31 @@ namespace BachelorOppgaveBackend.Controllers
 
             if (user.Id == post.UserId || user.UserRole.Type == "Admin")
             {
-                var votes = _context.Votes.Where(u => u.PostId == postId).ToList();
+                var votes = _context.Votes.Where(u => u.PostId == postId).Select(v => new Vote
+                {
+                    Created = v.Created,
+                    Id = v.Id,
+                    Liked = v.Liked,
+                    Post = new Post
+                    {
+                        Id = v.Post.Id,
+                        Category = v.Post.Category,
+                        Created = v.Post.Created,
+                        Status = new Status
+                        {
+                            Type = v.Post.Status.Type,
+                            Description = v.Post.Status.Description,
+                            Created = v.Post.Status.Created
+                        },
+                        User = new User
+                        {
+                            UserName = v.Post.User.UserName,
+                            Email = v.Post.User.Email,
+                        },
+                        Description = v.Post.Description,
+                        Title = v.Post.Title,
+                    },
+                }).ToList();
                 if (votes == null)
                 {
                     return NotFound();

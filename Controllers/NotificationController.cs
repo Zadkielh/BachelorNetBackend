@@ -19,8 +19,18 @@ namespace BachelorOppgaveBackend.Controllers
         [HttpGet]
         public IActionResult GetUserNotifications([FromHeader] Guid userId)
         {
-            var notifications = _context.Notifications.Where(n => n.UserId == userId).ToList();
-            return Ok(notifications);
+            var notifications = _context.Notifications.Where(n => n.UserId == userId).Select(n => new Notification
+            {
+                Id = n.Id,
+                Type = n.Type,
+                CommentId = n.CommentId,
+                PostId = n.PostId,
+                Seen = n.Seen,
+                Created = n.Created
+            }).ToList();
+
+            if (notifications.Any()) { return Ok(notifications); }
+            return NotFound();
         }
 
 

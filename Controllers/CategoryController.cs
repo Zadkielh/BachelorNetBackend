@@ -18,6 +18,8 @@ public class CategoryController : ControllerBase
     public CategoryController(ApplicationDbContext context)
     {
         _context = context;
+        System.Threading.Thread.Sleep(1000);
+
     }
     
     

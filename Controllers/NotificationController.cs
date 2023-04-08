@@ -14,6 +14,8 @@ namespace BachelorOppgaveBackend.Controllers
         public NotificationController(ApplicationDbContext context)
         {
             _context = context;
+            System.Threading.Thread.Sleep(1000);
+
         }
 
         [HttpGet]
@@ -72,7 +74,7 @@ namespace BachelorOppgaveBackend.Controllers
             if (noti == null) { return NotFound(); }
 
 
-            if (userid != Guid.Empty && noti != null && noti.UserId == userid) 
+            if (userid != Guid.Empty && noti != null && noti.UserId == userid)
             {
                 _context.Notifications.Remove(noti);
                 _context.SaveChanges();

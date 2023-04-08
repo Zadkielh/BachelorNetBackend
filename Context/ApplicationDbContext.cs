@@ -74,8 +74,8 @@ namespace BachelorOppgaveBackend.PostgreSQL
            var getUsers = db.Users.ToList();
            
            // Add Status test data
-           var s1 = new Status(null, "Pending", "Venter på svar");
-           var s2 = new Status(null, "Pending", "Venter på svar");;
+           var s1 = new Status(null, "Venter", "Venter på svar");
+           var s2 = new Status(null, "Venter", "Venter på svar");;
 
            var status = new[]
            {

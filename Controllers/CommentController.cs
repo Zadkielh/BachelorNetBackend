@@ -17,29 +17,34 @@ namespace BachelorOppgaveBackend.Controllers
         public CommentController(ApplicationDbContext context)
         {
             _context = context;
+            System.Threading.Thread.Sleep(1000);
+
         }
 
-        private List<Comment> recComments(Guid cc, Guid postId) 
-        {   
+        private List<Comment> recComments(Guid cc, Guid postId)
+        {
             var parentComments = _context.Comments.Include(u => u.User).Include(r => r.User.UserRole).Where(p => p.PostId == postId).Include(p => p.ParentComment).Where(c => c.ParentComment.Id == cc).
               Select(c => new Comment
-            {
-                Id = c.Id,
-                Content = c.Content,
-                Created = c.Created,
-                PostId = c.PostId,
-                User = new User{
-                    UserName = c.User.UserName,
-                    Email = c.User.Email,
-                    UserRole = c.User.UserRole
-                }
-            }).ToList();
+              {
+                  Id = c.Id,
+                  Content = c.Content,
+                  Created = c.Created,
+                  PostId = c.PostId,
+                  User = new User
+                  {
+                      UserName = c.User.UserName,
+                      Email = c.User.Email,
+                      UserRole = c.User.UserRole
+                  }
+              }).ToList();
 
-            if (parentComments.Count() == 0) {
+            if (parentComments.Count() == 0)
+            {
                 return new List<Comment>();
             }
 
-            for (int i = 0; i < parentComments.Count(); i++) {
+            for (int i = 0; i < parentComments.Count(); i++)
+            {
                 parentComments[i].ChildrenComments = recComments(parentComments[i].Id, postId);
             }
 
@@ -57,19 +62,21 @@ namespace BachelorOppgaveBackend.Controllers
                 Content = c.Content,
                 Created = c.Created,
                 PostId = c.PostId,
-                User = new User{
+                User = new User
+                {
                     UserName = c.User.UserName,
                     Email = c.User.Email,
                     UserRole = c.User.UserRole
                 }
             }).ToList();
-            
-             if (parentComments.Count() == 0)
+
+            if (parentComments.Count() == 0)
             {
                 return NotFound("No comments found.");
             }
-            
-            for (int i = 0; i < parentComments.Count(); i++) {
+
+            for (int i = 0; i < parentComments.Count(); i++)
+            {
                 parentComments[i].ChildrenComments = recComments(parentComments[i].Id, postId);
                 Console.WriteLine("init comment" + i);
             }
@@ -83,16 +90,16 @@ namespace BachelorOppgaveBackend.Controllers
         {
             var user = _context.Users.Where(u => u.Id == userId).FirstOrDefault();
             if (user == null) { return NotFound("Invalid User"); }
-            
+
             var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
             if (post == null) { return NotFound("Invalid Post"); }
 
             var comment = new Comment(post, user, null, content);
 
             var parentComment = _context.Comments.Where(c => c.Id == parentId).FirstOrDefault();
-            if (parentComment != null) 
+            if (parentComment != null)
             {
-                comment.ParentCommentId= parentId;
+                comment.ParentCommentId = parentId;
             }
 
             _context.Comments.Add(comment);
@@ -110,7 +117,7 @@ namespace BachelorOppgaveBackend.Controllers
             if (user == null) { return NotFound("Invalid User"); }
 
             var comment = _context.Comments.Where(c => c.Id == id).FirstOrDefault();
-            if (comment == null) { return NotFound("Invalid Comment");  }
+            if (comment == null) { return NotFound("Invalid Comment"); }
 
             if (comment.UserId != user.Id) { return Unauthorized(); }
 
@@ -133,7 +140,7 @@ namespace BachelorOppgaveBackend.Controllers
             var comment = _context.Comments.Where(c => c.Id == id).FirstOrDefault();
             if (comment == null) { return NotFound("Invalid Comment"); }
 
-            if (comment.UserId != user.Id || user.UserRole.Type != "Admin") { return Unauthorized();  }
+            if (comment.UserId != user.Id || user.UserRole.Type != "Admin") { return Unauthorized(); }
 
             _context.Comments.Remove(comment);
             _context.SaveChanges();

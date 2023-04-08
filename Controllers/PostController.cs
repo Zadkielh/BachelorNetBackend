@@ -18,17 +18,29 @@ public class PostController : ControllerBase
     public PostController(ApplicationDbContext context)
     {
         _context = context;
+        System.Threading.Thread.Sleep(1000);
+
     }
-    
-    
+
+
     [HttpGet]
-    public IActionResult GetPosts([FromHeader] Guid? userId, string? query, string? orderByDesc)
+    public IActionResult GetPosts([FromHeader] Guid? userId, string? query, string? orderByDesc, Guid? queryCategory, string? queryStatus)
     {
         IQueryable<Post> posts = _context.Set<Post>();
 
         if (query != null)
         {
             posts = posts.Where(p => p.Title.Contains(query) || p.User.UserName.Contains(query));
+        }
+
+        if (queryCategory != null)
+        {
+            posts = posts.Where(c => c.Category.Id == queryCategory);
+        }
+
+        if (queryStatus != null)
+        {
+            posts = posts.Where(c => c.Status.Type == queryStatus);
         }
 
         var res = posts.Select(p => new
@@ -39,11 +51,11 @@ public class PostController : ControllerBase
             p.Created,
             up_votes = _context.Votes.Where(v => v.Liked == true).Count(v => p.Id == v.PostId),
             down_votes = _context.Votes.Where(v => v.Liked == false).Count(v => p.Id == v.PostId),
-            user = new {p.User.UserName, p.User.Email },
+            user = new { p.User.UserName, p.User.Email },
             category = new { p.CategoryId, p.Category.Type },
             status = new { p.StatusId, p.Status.Type },
             favourite = _context.Favorites.Where(s => p.Id == s.PostId).Where(s => userId == s.UserId).FirstOrDefault() == null ? false : true,
-            liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).Select(v => new {v.Liked}).FirstOrDefault() ?? null,
+            liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).Select(v => new { v.Liked }).FirstOrDefault() ?? null,
             comments = _context.Comments.Count(c => p.Id == c.PostId)
         });
 
@@ -58,16 +70,16 @@ public class PostController : ControllerBase
                 res = res.OrderByDescending(v => v.up_votes);
 
             }
-            else if (orderByDesc == "comments") 
+            else if (orderByDesc == "comments")
             {
                 res = res.OrderByDescending(c => c.comments);
             }
         }
-        
+
         return Ok(res.ToList());
     }
 
-   
+
 
     [HttpGet("id/{id}")]
     public IActionResult GetPostById([FromHeader] Guid userId, Guid id)
@@ -81,11 +93,11 @@ public class PostController : ControllerBase
                 p.Created,
                 up_votes = _context.Votes.Where(v => v.Liked == true).Count(v => p.Id == v.PostId),
                 down_votes = _context.Votes.Where(v => v.Liked == false).Count(v => p.Id == v.PostId),
-                user = new {p.User.UserName, p.User.Email },
+                user = new { p.User.UserName, p.User.Email },
                 category = new { p.CategoryId, p.Category.Type },
                 status = new { p.StatusId, p.Status.Type },
                 favourite = _context.Favorites.Where(s => p.Id == s.PostId).Where(s => userId == s.UserId).FirstOrDefault() == null ? false : true,
-                liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).Select(v => new {v.Liked}).FirstOrDefault() ?? null,
+                liked = _context.Votes.Where(v => p.Id == v.PostId).Where(v => userId == v.UserId).Select(v => new { v.Liked }).FirstOrDefault() ?? null,
                 comments = _context.Comments.Count(c => p.Id == c.PostId)
             })
             .Where(t => t.Id == id)
@@ -130,7 +142,7 @@ public class PostController : ControllerBase
         {
             return NotFound();
         }
-        
+
         var post = _context.Posts.Include(u => u.User).Where(p => p.Id == id).FirstOrDefault();
         if (post == null)
         {
@@ -155,9 +167,9 @@ public class PostController : ControllerBase
 
         return NotFound("Invalid access");
     }
-    
-    
-    
+
+
+
     [HttpDelete("id/{id}")]
     public IActionResult DeletePost([FromHeader] Guid userId, Guid id)
     {
@@ -179,7 +191,7 @@ public class PostController : ControllerBase
             _context.SaveChanges();
             return Ok();
         }
-        
+
         return NotFound("Invalid access");
     }
 }

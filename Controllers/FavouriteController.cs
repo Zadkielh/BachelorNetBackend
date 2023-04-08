@@ -14,6 +14,8 @@ namespace BachelorOppgaveBackend.Controllers
         public FavouriteController(ApplicationDbContext context)
         {
             _context = context;
+            System.Threading.Thread.Sleep(1000);
+
         }
 
         [HttpGet]

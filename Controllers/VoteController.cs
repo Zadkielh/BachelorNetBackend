@@ -20,6 +20,8 @@ namespace BachelorOppgaveBackend.Controllers
         {
             _context = context;
             _notificationManager = notificationManager;
+            System.Threading.Thread.Sleep(1000);
+
         }
 
         [HttpGet("user")]
@@ -105,7 +107,7 @@ namespace BachelorOppgaveBackend.Controllers
                 }
                 return Ok(votes);
             }
-            
+
             return Unauthorized();
         }
 
@@ -127,7 +129,7 @@ namespace BachelorOppgaveBackend.Controllers
             var vote = _context.Votes.Where(u => u.PostId == postId).Where(u => u.UserId == userId).FirstOrDefault();
 
             Vote p;
-            switch(direction)
+            switch (direction)
             {
                 case 1:
                     if (vote != null)
@@ -163,7 +165,7 @@ namespace BachelorOppgaveBackend.Controllers
                     _context.Votes.Add(p);
                     break;
             }
-            
+
             _context.SaveChanges();
             return Ok();
         }

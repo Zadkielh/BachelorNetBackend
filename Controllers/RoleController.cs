@@ -16,6 +16,8 @@ namespace BachelorOppgaveBackend.Controllers
         public RoleController(ApplicationDbContext context)
         {
             _context = context;
+            System.Threading.Thread.Sleep(1000);
+
         }
 
         [HttpGet]
@@ -60,7 +62,7 @@ namespace BachelorOppgaveBackend.Controllers
                     _context.SaveChanges();
                     return Ok();
                 }
-                
+
                 role.Type = roleType;
                 role.Description = description;
                 role.Created = DateTime.UtcNow;
@@ -85,14 +87,14 @@ namespace BachelorOppgaveBackend.Controllers
             if (user.UserRole.Type == "Admin")
             {
                 var role = _context.UsersRoles.Where(r => r.Id == id).FirstOrDefault();
-                if (role != null) 
+                if (role != null)
                 {
                     _context.UsersRoles.Remove(role);
                     _context.SaveChanges();
                     return Ok();
                 }
                 return NotFound();
-                
+
             }
 
             return Unauthorized();

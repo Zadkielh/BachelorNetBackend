@@ -18,6 +18,8 @@ namespace BachelorOppgaveBackend.Controllers
         {
             _context = context;
             _notificationManager = notificationManager;
+            System.Threading.Thread.Sleep(1000);
+
         }
 
         [HttpGet("post/{id}")]
@@ -38,9 +40,9 @@ namespace BachelorOppgaveBackend.Controllers
             var status = _context.Statuses.Where(s => s.Id == post.StatusId).Select(s => new Status
             {
                 Id = s.Id,
-                Created= DateTime.Now,
-                Description= s.Description,
-                Type= s.Type,
+                Created = DateTime.Now,
+                Description = s.Description,
+                Type = s.Type,
             }).FirstOrDefault();
 
             if (status == null)
@@ -78,7 +80,7 @@ namespace BachelorOppgaveBackend.Controllers
                 {
                     status.Type = type;
                 }
-                
+
                 status.Description = description;
                 status.UserId = userId;
                 _context.Statuses.Update(status);
@@ -90,7 +92,7 @@ namespace BachelorOppgaveBackend.Controllers
             }
 
             return Unauthorized();
-            
+
         }
 
     }

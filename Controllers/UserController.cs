@@ -14,6 +14,8 @@ public class UserController : ControllerBase
     public UserController(ApplicationDbContext context)
     {
         _context = context;
+        System.Threading.Thread.Sleep(1000);
+
     }
 
     [HttpGet]

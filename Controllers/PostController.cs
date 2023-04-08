@@ -22,17 +22,13 @@ public class PostController : ControllerBase
     
     
     [HttpGet]
-    public IActionResult GetPosts([FromHeader] Guid? userId, string? title, string? category, string? orderByDesc)
+    public IActionResult GetPosts([FromHeader] Guid? userId, string? query, string? orderByDesc)
     {
         IQueryable<Post> posts = _context.Set<Post>();
-        
-        if (category != null)
+
+        if (query != null)
         {
-            posts = posts.Where(p => p.Category.Type == category);
-        }
-        if (title != null)
-        {
-            posts = posts.Where(p => p.Title.Contains(title));
+            posts = posts.Where(p => p.Title.Contains(query) || p.User.UserName.Contains(query));
         }
 
         var res = posts.Select(p => new

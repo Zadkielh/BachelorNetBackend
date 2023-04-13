@@ -30,7 +30,7 @@ public class PostController : ControllerBase
 
         if (query != null)
         {
-            posts = posts.Where(p => p.Title.Contains(query) || p.User.UserName.Contains(query));
+            posts = posts.Where(p => EF.Functions.ILike(p.Title, $"%{query}%") || EF.Functions.ILike(p.User.UserName, $"%{query}%"));
         }
 
         if (queryCategory != null)

@@ -2,6 +2,7 @@ using BachelorOppgaveBackend.Model;
 using Microsoft.AspNetCore.Mvc;
 using BachelorOppgaveBackend.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace BachelorOppgaveBackend.Controllers;
 
@@ -33,19 +34,19 @@ public class UserController : ControllerBase
 
         IQueryable<User> users = _context.Set<User>();
 
-        if(userName != null)
+        if (userName != null)
         {
             users = users.Where(u => u.UserName.Contains(userName));
         }
-        if(userRoleId != null) 
+        if (userRoleId != null)
         {
             users = users.Where(u => u.UserRoleId == userRoleId);
         }
-        if(orderByDesc == "date")
+        if (orderByDesc == "date")
         {
             users = users.OrderByDescending(u => u.Created);
         }
-        
+
         users.Include(r => r.UserRole).Take(100).ToList();
 
         if (!users.Any())
@@ -54,8 +55,8 @@ public class UserController : ControllerBase
         }
         return Ok(users);
     }
-    
-    
+
+
     [HttpPost]
     public IActionResult PostUser([FromForm] Guid azureId, [FromForm] string userName, [FromForm] string userEmail, [FromHeader] string token)
     {
@@ -67,7 +68,7 @@ public class UserController : ControllerBase
 
         var userExists = _context.Users.Include(u => u.UserRole).Where(u => u.AzureId == azureId).FirstOrDefault();
 
-        if(userExists != null)
+        if (userExists != null)
         {
             return Ok(userExists);
         }
@@ -82,27 +83,31 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    
-    [HttpPut("id/{id}")]
-    public IActionResult Put([FromHeader] Guid userId, Guid id, Guid? userRoleId, string? userName)
+
+    [HttpPost("id/{id}")]
+    public IActionResult Put([FromHeader] Guid userId, Guid id, Guid? userRoleId, string? userName, [FromBody] string? profilePicture)
     {
         var user = _context.Users.Include(r => r.UserRole).Where(u => u.Id == userId).FirstOrDefault();
         if (user == null)
         {
             return NotFound();
         }
-        if (user.UserRole.Type != "Admin")
+        if (userId != id)
         {
-            return Unauthorized("Invalid access");
+            if (user.UserRole.Type != "Admin")
+            {
+                return Unauthorized("Invalid access");
+            }
         }
+
 
         var u = _context.Users.Include(u => u.UserRole).Where(u => u.Id == id).FirstOrDefault();
         if (u == null)
         {
             return NotFound("User not found");
         }
-        
-        
+
+
         if (userRoleId != null)
         {
             var role = _context.UsersRoles.Where(r => r.Id == userRoleId).FirstOrDefault();
@@ -119,12 +124,19 @@ public class UserController : ControllerBase
             u.UserName = userName;
         }
 
+        if (profilePicture != null)
+        {
+            Console.WriteLine("Updating profile picture");
+            Console.WriteLine(profilePicture);
+            u.ProfilePicture = profilePicture;
+        }
+
         _context.Users.Update(u);
         _context.SaveChanges();
         return Ok();
     }
 
-    
+
     [HttpDelete]
     public IActionResult Delete()
     {

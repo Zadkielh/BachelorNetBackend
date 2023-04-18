@@ -13,6 +13,7 @@ namespace BachelorOppgaveBackend.Model
             UserName = userName;
             Email = email;
             Created = DateTime.UtcNow;
+            ProfilePicture = null;
 
         }
             
@@ -27,6 +28,8 @@ namespace BachelorOppgaveBackend.Model
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        public string? ProfilePicture {get; set;}
         
         [Required]
         [DataType(DataType.DateTime)]

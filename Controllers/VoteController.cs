@@ -59,6 +59,22 @@ namespace BachelorOppgaveBackend.Controllers
             return Ok(votes);
         }
 
+        [HttpGet("user/post/{id}")]
+        public IActionResult GetUserVoteOnPost([FromHeader] Guid userId, Guid id)
+        {
+            var votes = _context.Votes.Where(u => u.UserId == userId).Where(p => p.PostId == id).Select(v => new Vote
+            {
+                Created = v.Created,
+                Id = v.Id,
+                Liked = v.Liked,
+            }).FirstOrDefault();
+            if (votes == null)
+            {
+                return NotFound();
+            }
+            return Ok(votes);
+        }
+
         [HttpGet("post")]
         public IActionResult GetPostVotes([FromHeader] Guid userId, Guid postId)
         {
